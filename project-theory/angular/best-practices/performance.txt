@@ -1,0 +1,155 @@
+*) Fast rendering is critical for Angular and we've built the framework with a lot of optimizations in mind to help you develop performant apps. To better understand the performance of your app we offer Angular DevTools and a video guide on how to use Chrome DevTools for profiling. In this section we cover the most common performance optimization techniques.
+
+*) Change detection is the process through which Angular checks to see whether your application state has changed, and if any DOM needs to be updated. At a high level, Angular walks your components from top to bottom, looking for changes. Angular runs its change detection mechanism periodically so that changes to the data model are reflected in an application’s view. Change detection can be triggered either manually or through an asynchronous event (for example, a user interaction or an XMLHttpRequest completion).
+
+--------------------------------------------------------------------  Zone pollution  --------------------------------------------------------------------------------------------------------
+
+*) Zone.js is a signaling mechanism that Angular uses to detect when an application state might have changed. It captures asynchronous operations like setTimeout, network requests, and event listeners. Angular schedules change detection based on signals from Zone.js.
+
+*) Identifying unnecessary change detection calls - 
+                                                  You can detect unnecessary change detection calls using Angular DevTools. Often they appear as consecutive bars in the profiler’s timeline with source setTimeout, setInterval, requestAnimationFrame, or an event handler. When you have limited calls within your application of these APIs, the change detection invocation is usually caused by a third-party library.
+
+*) Run tasks outside NgZone - 
+
+*) On every change detection cycle, Angular synchronously:
+
+Evaluates all template expressions in all components, unless specified otherwise, based on that each component's detection strategy
+Executes the ngDoCheck, ngAfterContentChecked, ngAfterViewChecked, and ngOnChanges lifecycle hooks. A single slow computation within a template or a lifecycle hook can slow down the entire change detection process because Angular runs the computations sequentially.
+On this page
+Identifying slow computations
+Optimizing slow computations
+
+arrow_upward_alt
+Back to the top
+Identifying slow computations
+You can identify heavy computations with Angular DevTools’ profiler. In the performance timeline, click a bar to preview a particular change detection cycle. This displays a bar chart, which shows how long the framework spent in change detection for each component. When you click a component, you can preview how long Angular spent evaluating its template and lifecycle hooks.
+
+Optimizing slow computations
+Here are several techniques to remove slow computations:
+
+Optimizing the underlying algorithm. This is the recommended approach. If you can speed up the algorithm that is causing the problem, you can speed up the entire change detection mechanism.
+Caching using pure pipes. You can move the heavy computation to a pure pipe. Angular reevaluates a pure pipe only if it detects that its inputs have changed, compared to the previous time Angular called it.
+Using memoization. Memoization is a similar technique to pure pipes, with the difference that pure pipes preserve only the last result from the computation where memoization could store multiple results.
+Avoid repaints/reflows in lifecycle hooks. Certain operations cause the browser to either synchronously recalculate the layout of the page or re-render it. Since reflows and repaints are generally slow, you want to avoid performing them in every change detection cycle.
+Pure pipes and memoization have different trade-offs. Pure pipes are an Angular built-in concept compared to memoization, which is a general software engineering practice for caching function results. The memory overhead of memoization could be significant if you invoke the heavy computation frequently with different arguments.
+
+*) JavaScript, by default, uses mutable data structures that you can reference from multiple different components. Angular runs change detection over your entire component tree to make sure that the most up-to-date state of your data structures is reflected in the DOM.
+
+Change detection is sufficiently fast for most applications. However, when an application has an especially large component tree, running change detection across the whole application can cause performance issues. You can address this by configuring change detection to only run on a subset of the component tree.
+
+If you are confident that a part of the application is not affected by a state change, you can use OnPush to skip change detection in an entire component subtree.
+
+On this page
+Using OnPush
+Common change detection scenarios
+An event is handled by a component with default change detection
+An event is handled by a component with OnPush
+An event is handled by a descendant of a component with OnPush
+New inputs to component with OnPush
+Edge cases
+
+arrow_upward_alt
+Back to the top
+Using OnPush
+OnPush change detection instructs Angular to run change detection for a component subtree only when:
+
+The root component of the subtree receives new inputs as the result of a template binding. Angular compares the current and past value of the input with ==.
+Angular handles an event (for example using event binding, output binding, or @HostListener ) in the subtree's root component or any of its children whether they are using OnPush change detection or not.
+You can set the change detection strategy of a component to OnPush in the @Component decorator:
+
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MyComponent {}
+check
+Common change detection scenarios
+This section examines several common change detection scenarios to illustrate Angular's behavior.
+
+An event is handled by a component with default change detection
+If Angular handles an event within a component without OnPush strategy, the framework executes change detection on the entire component tree. Angular will skip descendant component subtrees with roots using OnPush, which have not received new inputs.
+
+As an example, if we set the change detection strategy of MainComponent to OnPush and the user interacts with a component outside the subtree with root MainComponent, Angular will check all the green components from the diagram below (AppComponent, HeaderComponent, SearchComponent, ButtonComponent) unless MainComponent receives new inputs:
+
+AppComponent
+
+HeaderComponent
+
+MainComponent (OnPush)
+
+SearchComponent
+
+ButtonComponent
+
+LoginComponent (OnPush)
+
+DetailsComponent
+
+Event
+
+An event is handled by a component with OnPush
+If Angular handles an event within a component with OnPush strategy, the framework will execute change detection within the entire component tree. Angular will ignore component subtrees with roots using OnPush, which have not received new inputs and are outside the component which handled the event.
+
+As an example, if Angular handles an event within MainComponent, the framework will run change detection in the entire component tree. Angular will ignore the subtree with root LoginComponent because it has OnPush and the event happened outside of its scope.
+
+AppComponent
+
+HeaderComponent
+
+MainComponent (OnPush)
+
+SearchComponent
+
+ButtonComponent
+
+LoginComponent (OnPush)
+
+DetailsComponent
+
+Event
+
+An event is handled by a descendant of a component with OnPush
+If Angular handles an event in a component with OnPush, the framework will execute change detection in the entire component tree, including the component’s ancestors.
+
+As an example, in the diagram below, Angular handles an event in LoginComponent which uses OnPush. Angular will invoke change detection in the entire component subtree including MainComponent (LoginComponent’s parent), even though MainComponent has OnPush as well. Angular checks MainComponent as well because LoginComponent is part of its view.
+
+AppComponent
+
+HeaderComponent
+
+MainComponent (OnPush)
+
+SearchComponent
+
+ButtonComponent
+
+LoginComponent (OnPush)
+
+DetailsComponent
+
+Event
+
+New inputs to component with OnPush
+Angular will run change detection within a child component with OnPush when setting an input property as result of a template binding.
+
+For example, in the diagram below, AppComponent passes a new input to MainComponent, which has OnPush. Angular will run change detection in MainComponent but will not run change detection in LoginComponent, which also has OnPush, unless it receives new inputs as well.
+
+AppComponent
+
+HeaderComponent
+
+MainComponent (OnPush)
+
+SearchComponent
+
+ButtonComponent
+
+LoginComponent (OnPush)
+
+DetailsComponent
+
+Parent passes new input to MainComponent
+
+Edge cases
+Modifying input properties in TypeScript code. When you use an API like @ViewChild or @ContentChild to get a reference to a component in TypeScript and manually modify an @Input property, Angular will not automatically run change detection for OnPush components. If you need Angular to run change detection, you can inject ChangeDetectorRef in your component and call changeDetectorRef.markForCheck() to tell Angular to schedule a change detection.
+Modifying object references. In case an input receives a mutable object as value and you modify the object but preserve the reference, Angular will not invoke change detection. That’s the expected behavior because the previous and the current value of the input point to the same reference.

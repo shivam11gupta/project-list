@@ -1,0 +1,28 @@
+*) usage pending do after project assignment.
+
+*) Signal inputs allow values to be bound from parent components. Those values are exposed using a Signal and can change during the lifecycle of your component.
+   import {Component, input} from '@angular/core';
+@Component({...})
+export class MyComp {
+  // optional
+  firstName = input<string>();         // InputSignal<string|undefined>
+  age = input(0);                      // InputSignal<number>
+  // required
+  lastName = input.required<string>(); // InputSignal<string>
+}
+
+*) class StudentDirective {
+  age = input(0, {alias: 'studentAge'});
+}
+
+*) p>First name: {{firstName()}}</p>
+<p>Last name: {{lastName()}}</p>
+
+*) Monitoring changes
+   constructor() {
+    effect(() => {
+      console.log(this.firstName());
+    });
+  }
+
+*) 

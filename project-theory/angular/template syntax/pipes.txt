@@ -1,0 +1,109 @@
+*) for example refer user.detail.component.html
+
+*) Pipes are a special operator in Angular template expressions that allows you to transform data declaratively in your template
+   <h1>Purchases from {{ company | titlecase }} on {{ purchasedOn | date }}</h1>
+
+*) Built-in Pipes
+Angular includes a set of built-in pipes in the @angular/common package:
+
+Name	Description
+AsyncPipe	Read the value from a Promise or an RxJS Observable.
+    myObservable$: Observable<number> = of(42);
+  myPromise$: Promise<string> = Promise.resolve('Hello World!');
+    
+    <p>{{ myObservable$ | async }}</p>
+    <h2>Using AsyncPipe with Promise</h2>
+    <p>{{ myPromise$ | async }}</p>
+
+    Using AsyncPipe with Observable
+    42
+    Using AsyncPipe with Promise
+    Hello World!
+
+CurrencyPipe	Transforms a number to a currency string, formatted according to locale rules.
+       price - 12345.6789;
+    <p>Price: {{ price | currency }}</p>
+     <p>Price: {{ price | currency:'EUR':'symbol-narrow':'4.2-2' }}</p>
+     Price: $12,345.68
+Price: €12,345.68
+
+DatePipe	Formats a Date value according to locale rules.
+       currentDate: Date = new Date();
+       <p>Current date: {{ currentDate | date }}</p>
+  <p>Current date: {{ currentDate | date:'fullDate' }}</p>
+  <p>Current date: {{ currentDate | date:'short' }}</p>
+
+      Using DatePipe
+Current date: Mar 3, 2023
+Current date: Friday, March 3, 2023
+Current date: 3/3/23, 12:17 AM
+
+
+DecimalPipe	Transforms a number into a string with a decimal point, formatted according to locale rules.
+I18nPluralPipe	Maps a value to a string that pluralizes the value according to locale rules.
+I18nSelectPipe	Maps a key to a custom selector that returns a desired value.
+JsonPipe	Transforms an object to a string representation via JSON.stringify, intended for debugging.
+KeyValuePipe	Transforms Object or Map into an array of key value pairs.
+LowerCasePipe	Transforms text to all lower case.
+PercentPipe	Transforms a number to a percentage string, formatted according to locale rules.
+SlicePipe	Creates a new Array or String containing a subset (slice) of the elements.
+     myArray: any[] = ['apple', 'banana', 'orange', 'grape', 'mango'];
+     <p>Sliced Array: {{ myArray | slice:1:3 }}</p>
+     Sliced Array: banana,orange
+
+TitleCasePipe	Transforms text to title case.
+      myString: string = 'this is a sentence in lowercase.';
+      <p>Transformed String: {{ myString | titlecase }}</p>
+      output - Transformed String: This Is A Sentence In Lowercase.
+
+*) Combining multiple pipes in the same expression - 
+<p>The event will occur on {{ scheduledOn | date | uppercase }}.</p>
+
+*) Passing parameters to pipes -  
+<p>The event will occur at {{ scheduledOn | date:'hh:mm':'UTC' }}.</p>
+
+*) Pipe operator precedence - 
+The pipe operator has lower precedence than other binary operators, including +, -, *, /, %, &&, ||, and ??.
+<!-- firstName and lastName are concatenated before the result is passed to the uppercase pipe -->
+{{ (firstName + lastName | uppercase }}
+
+*) Change detection with pipes - 
+By default, all pipes are considered pure, which means that it only executes when a primitive input value (such as a String, Number, Boolean, or Symbol) or a changed object reference (such as Array, Object, Function, or Date). Pure pipes offer a performance advantage because Angular can avoid calling the transformation function if the passed value has not changed.
+As a result, this means that mutations to object properties or array items are not detected unless the entire object or array reference is replaced with a different instance. If you want this level of change detection
+
+*) Creating custom pipes - 
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({
+  name: 'myCustomTransformation',
+  standalone: true
+})
+export class MyCustomTransformationPipe implements PipeTransform {
+  transform(value: string, format: string): string {
+    let msg = `My custom transformation of ${value}.`
+    if (format === 'uppercase') {
+      return msg.toUpperCase()
+    else {
+      return msg
+    }
+  }
+}
+
+*) Detecting change within arrays or objects -
+when you want a pipe to detect changes within arrays or objects, it must be marked as an impure function by passing the pure flag with a value of false.
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({
+  name: 'featuredItemsImpure',
+  pure: false,
+  standalone: true
+})
+export class FeaturedItemsImpurePipe implements PipeTransform {
+  transform(value: string, format: string): string {
+    let msg = `My custom transformation of ${value}.`
+    if (format === 'uppercase') {
+      return msg.toUpperCase()
+    else {
+      return msg
+    }
+  }
+  }
+

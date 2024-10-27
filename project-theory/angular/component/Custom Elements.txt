@@ -1,0 +1,15 @@
+*) please refer popup.service.ts
+
+*) Angular elements are Angular components packaged as custom elements (also called Web Components), a web standard for defining new HTML elements in a framework-agnostic way.
+
+*) Using custom elements - 
+    Custom elements bootstrap themselves - they start when they are added to the DOM, and are destroyed when removed from the DOM. Once a custom element is added to the DOM for any page, it looks and behaves like any other HTML element, and does not require any special knowledge of Angular terms or usage conventions.
+    To add the @angular/elements package to your workspace, run the following command:
+    npm install @angular/elements --save
+
+*) How it works - 
+   The createCustomElement() function converts a component into a class that can be registered with the browser as a custom element. After you register your configured class with the browser's custom-element registry, use the new element just like a built-in HTML element in content that you add directly into the DOM:
+  <my-popup message="Use Angular!"></my-popup>
+
+*) Example: A Popup Service - 
+   

@@ -1,0 +1,40 @@
+*) ng test
+
+*) Configuration - 
+   The Angular CLI takes care of Jasmine and Karma configuration for you. It constructs the full configuration in memory, based on options specified in the angular.json file.
+
+*) Test file name and location - 
+   Inside the src/app folder the Angular CLI generated a test file for the AppComponent named app.component.spec.ts.
+
+*) Testing in continuous integration - 
+    ng test --no-watch --no-progress --browsers=ChromeHeadless
+
+*) Find out how much code you're testing - 
+   ng test --no-watch --code-coverage
+   If you want to create code-coverage reports every time you test, set the following option in the Angular CLI configuration file, angular.json:
+   "test": {
+  "options": {
+    "codeCoverage": true
+  }
+}
+
+*) Code coverage enforcement - 
+   For example, suppose you want the code base to have a minimum of 80% code coverage. To enable this, open the Karma test platform configuration file, karma.conf.js, and add the check property in the coverageReporter: key.
+   coverageReporter: {
+  dir: require('path').join(__dirname, './coverage/<project-name>'),
+  subdir: '.',
+  reporters: [
+    { type: 'html' },
+    { type: 'text-summary' }
+  ],
+  check: {
+    global: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80
+    }
+  }
+}
+
+*) 

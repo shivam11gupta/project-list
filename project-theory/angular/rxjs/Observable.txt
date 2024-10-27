@@ -1,0 +1,73 @@
+*) practice after project assignment
+
+*) Observables provide support for passing messages between parts of your application.
+· Observables are a powerful feature used extensively in reactive programming to handle asynchronous operations and data streams.
+· Observables provide a way to subscribe to and receive notifications when new data or events are emitted, enabling you to react to changes in real-time.
+
+*) import { Observable } from 'rxjs';
+
+const observable = new Observable((subscriber) => {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
+  setTimeout(() => {
+    subscriber.next(4);
+    subscriber.complete();
+  }, 1000);
+});
+
+
+observable.subscribe({
+  next(x) {
+    console.log('got value ' + x);
+  },
+  error(err) {
+    console.error('something wrong occurred: ' + err);
+  },
+  complete() {
+    console.log('done');
+  },
+  // Later:
+observable.unsubscribe();
+  output - content_copyopen_in_new
+just before subscribe
+got value 1
+got value 2
+got value 3
+just after subscribe
+got value 4
+done
+
+*) What is the difference between an Observable and a function? Observables can "return" multiple values over time, something which functions cannot -
+   function foo() {
+  console.log('Hello');
+  return 42;
+  return 100; // dead code. will never happen
+}
+
+import { Observable } from 'rxjs';
+ 
+const foo = new Observable((subscriber) => {
+  console.log('Hello');
+  subscriber.next(42);
+  subscriber.next(100);
+  subscriber.next(200);
+  setTimeout(() => {
+    subscriber.next(300); // happens asynchronously
+  }, 1000);
+});
+ 
+console.log('before');
+foo.subscribe((x) => {
+  console.log(x);
+});
+console.log('after');  // "before"
+"Hello"
+42
+100
+200
+"after"
+300
+
+*) ReplaySubject - 
+   

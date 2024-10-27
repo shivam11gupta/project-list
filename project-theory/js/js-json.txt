@@ -1,0 +1,50 @@
+*) person = {name:"John", age:31, city:"New York"};  person.name or person["name"];
+
+*) JSON is Unlike XML Because
+JSON doesn't use end tag
+JSON is shorter
+JSON is quicker to read and write
+JSON can use arrays
+
+*) Use the JavaScript function JSON.parse() to convert text into a JavaScript object:
+   const text = '[ "Ford", "BMW", "Audi", "Fiat" ]';
+const myArr = JSON.parse(text);
+document.getElementById("demo").innerHTML = myArr[0];    // Ford
+
+*) Date objects are not allowed in JSON.
+If you need to include a date, write it as a string.
+You can convert it back into a date object later:
+const text = '{"name":"John", "birth":"1986-12-14", "city":"New York"}';
+const obj = JSON.parse(text);
+obj.birth = new Date(obj.birth);
+
+document.getElementById("demo").innerHTML = obj.name + ", " + obj.birth;
+
+*) Functions are not allowed in JSON.
+If you need to include a function, write it as a string.
+You can convert it back into a function later:
+const text = '{"name":"John", "age":"function () {return 30;}", "city":"New York"}';
+const obj = JSON.parse(text);
+obj.age = eval("(" + obj.age + ")");
+
+document.getElementById("demo").innerHTML = obj.name + ", " + obj.age();
+
+*) When sending data to a web server, the data has to be a string.
+Convert a JavaScript object into a string with JSON.stringify().
+const myJSON = JSON.stringify(obj);
+
+*) In JSON, date objects are not allowed. The JSON.stringify() function will convert any dates into strings.
+   const obj = {name: "John", today: new Date(), city : "New York"};
+const myJSON = JSON.stringify(obj);
+
+*) If you have data stored in a JavaScript object, you can convert the object into JSON, and send it to a server:
+   const myObj = {name: "John", age: 31, city: "New York"};
+const myJSON = JSON.stringify(myObj);
+window.location = "demo_json.php?x=" + myJSON;
+
+*) Receiving Data -
+const myJSON = '{"name":"John", "age":31, "city":"New York"}';
+const myObj = JSON.parse(myJSON);
+document.getElementById("demo").innerHTML = myObj.name;
+
+*) 

@@ -1,0 +1,30 @@
+*) This page provides a conceptual overview of a dependency injection technique that is recommended for library developers. Designing your library with lightweight injection tokens helps optimize the bundle size of client applications that use your library.
+
+*) You can manage the dependency structure among your components and injectable services to optimize bundle size by using tree-shakable providers. This normally ensures that if a provided component or service is never actually used by the application, the compiler can remove its code from the bundle.
+   Due to the way Angular stores injection tokens, it is possible that such an unused component or service can end up in the bundle anyway. This page describes a dependency injection design pattern that supports proper tree-shaking by using lightweight injection tokens.
+
+*) When tokens are retained - 
+<lib-card>;
+  <lib-header>…</lib-header>;
+</lib-card>;
+@Component({
+  selector: 'lib-header',
+  …,
+})
+class LibHeaderComponent {}
+@Component({
+  selector: 'lib-card',
+  …,
+})
+class LibCardComponent {
+  @ContentChild(LibHeaderComponent) header: LibHeaderComponent|null = null;
+}
+LibCardComponent actually contains two references to the LibHeaderComponent: - 
+  One of these reference is in the type position-- that is, it specifies LibHeaderComponent as a type: header: LibHeaderComponent;.
+The other reference is in the value position-- that is, LibHeaderComponent is the value of the @ContentChild() parameter decorator: @ContentChild(LibHeaderComponent).
+The compiler handles token references in these positions differently:
+
+The compiler erases type position references after conversion from TypeScript, so they have no impact on tree-shaking.
+The compiler must keep value position references at runtime, which prevents the component from being tree-shaken.
+
+*) deep study later

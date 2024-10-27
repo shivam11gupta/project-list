@@ -1,0 +1,53 @@
+*) for example please refer user.detail.component.html
+
+*) <ng-template> element lets you declare a template fragment – a section of content that you can dynamically or programmatically render.
+Use Cases of Ng-template
+Reusable components - One of the most common use cases of ng-template is creating reusable components. With ng-template, developers can create a template that can be used in multiple components.
+Conditional rendering 
+Dynamic content
+Customizing Components
+
+*) <p>This is a normal element</p>
+<ng-template #myFragment let-pizzaTopping="topping">
+  <p>You selected: {{pizzaTopping}}</p>
+</ng-template>
+<ng-container
+  [ngTemplateOutlet]="myFragment"
+  [ngTemplateOutletContext]="{topping: 'onion'}"
+/>
+  output - <p>This is a normal element</p>
+          <p>this is dividing content</p>
+            <p>you selected: onion</p>
+
+*) @Component({
+  /* ... */,
+  selector: 'component-with-fragment',
+  template: `
+    <h2>Component with a fragment</h2>
+    <ng-template #myFragment>
+      <p>This is the fragment</p>
+    </ng-template>
+    <my-outlet [fragment]="myFragment" />
+  `,
+})
+export class ComponentWithFragment { }
+@Component({
+  /* ... */,
+  selector: 'my-outlet',
+  template: `<button (click)="showFragment()">Show</button>`,
+})
+export class MyOutlet {
+  private viewContainer = inject(ViewContainerRef);
+  @Input() fragment: TemplateRef<unknown> | undefined;
+  showFragment() {
+    if (this.fragment) {
+      this.viewContainer.createEmbeddedView(this.fragment, {topping: 'onion'});
+    }
+  }
+  output - <component-with-fragment>
+  <h2>Component with a fragment>
+  <my-outlet>
+    <button>Show</button>
+  </my-outlet>
+  <p>This is the fragment</p>
+</component-with-fragment>

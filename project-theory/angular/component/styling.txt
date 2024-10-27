@@ -1,0 +1,32 @@
+*) Style scoping
+Every component has a view encapsulation setting that determines how the framework scopes a component's styles. There are three view encapsulation modes: Emulated, ShadowDom, and None. You can specify the mode in the @Component decorator:
+
+@Component({
+  ...,
+  encapsulation: ViewEncapsulation.None,
+})
+export class ProfilePhoto { }
+
+*) ViewEncapsulation.Emulated
+By default, Angular uses emulated encapsulation so that a component's styles only apply to elements defined in that component's template. In this mode, the framework generates a unique HTML attribute for each component instance, adds that attribute to elements in the component's template, and inserts that attribute into the CSS selectors defined in your component's styles.
+
+:host - 
+example - component A has selector <app-a>, and this is written inside component B html. 
+<div><app-a></app-a></div>. if we want to apply css in app-a then one way is in component B css file - div app-a {style} but if app-a is written many component than css may repetitive. then 
+in app-a css file directly we can write css using :host - :host {
+    style  // app-a is custom element so it is inline block.for display we have to add display: block; feature.
+}
+
+:host-context - this is same as :host but if example - <div><app-a></app-a><div> <div class="abcd"><app-a></app-a></div> if we want to apply css only which parent class is abcd then
+      :host-context(.abcd) {style};
+
+::ng-deep
+Angular's emulated encapsulation mode supports a custom pseudo class, ::ng-deep. Applying this pseudo class to a CSS rule disables encapsulation for that rule, effectively turning it into a global style. The Angular team strongly discourages new use of ::ng-deep. These APIs remain exclusively for backwards compatibility.
+
+*) ViewEncapsulation.ShadowDom
+This mode scopes styles within a component by using the web standard Shadow DOM API. When enabling this mode, Angular attaches a shadow root to the component's host element and renders the component's template and styles into the corresponding shadow tree.
+This mode strictly guarantees that only that component's styles apply to elements in the component's template. Global styles cannot affect elements in a shadow tree and styles inside the shadow tree cannot affect elements outside of that shadow tree.
+
+*) ViewEncapsulation.None
+This mode disables all style encapsulation for the component. Any styles associated with the component behave as global styles.
+

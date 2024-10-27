@@ -1,0 +1,35 @@
+*) Angular handles most DOM creation, updates, and removals for you. However, you might rarely need to directly interact with a component's DOM. Components can inject ElementRef to get a reference to the component's host element:
+@Component({...})
+export class ProfilePhoto {
+  constructor(elementRef: ElementRef) {
+    afterRender(() => {
+      // Focus the first input element in this component.
+      elementRef.nativeElement.querySelector('input')?.focus();
+    });
+  }
+}
+
+*) Using a component's renderer - 
+   Components can inject an instance of Renderer2 to perform certain DOM manipulations that are tied to other Angular features.
+   Any DOM elements created by a component's Renderer2 participate in that component's style encapsulation.
+   Certain Renderer2 APIs also tie into Angular's animation system. You can use the setProperty method to update synthetic animation properties and the listen method to add event listeners for synthetic animation events. See the Animations guide for details.
+   Aside from these two narrow use-cases, there is no difference between using Renderer2 and native DOM APIs. Renderer2 APIs do not support DOM manipulation in server-side rendering or build-time pre-rendering contexts.
+    example - <h1 #appGoWild>
+  Hello World!
+</h1>
+<!-- <h1 class="wild">Hello World!</h1> -->
+component - import { Directive, Renderer2, ElementRef, OnInit } from '@angular/core';
+
+@Component({
+  selector: '[appGoWild]'
+})
+export class GoWild implements OnInit {
+  @ViewChild("appGoWild") appGoWild: ElementRef<any>;
+  constructor(private renderer: Renderer2, private el: ElementRef) {}
+
+  ngOnInit() {
+    this.renderer.addClass(this.appGoWild.nativeElement, 'wild');
+  }
+}
+
+

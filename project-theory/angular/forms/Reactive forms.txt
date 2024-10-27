@@ -1,0 +1,139 @@
+*) practical after project assignment
+
+*) Import the ReactiveFormsModule - 
+    import {ReactiveFormsModule} from '@angular/forms';
+...
+@NgModule({
+...
+  imports: [
+...
+    // other imports ...
+    ReactiveFormsModule,
+  ],
+...
+})
+export class AppModule {}
+
+*) Generate a new component with a FormControl - 
+    import {Component} from '@angular/core';
+import {FormControl} from '@angular/forms';
+@Component({
+  selector: 'app-name-editor',
+  templateUrl: './name-editor.component.html',
+  styleUrls: ['./name-editor.component.css'],
+})
+export class NameEditorComponent {
+  name = new FormControl('');
+...
+}
+
+*) <label for="name">Name: </label>
+<input id="name" type="text" [formControl]="name">
+
+*) Displaying a form control value - 
+    <p>Value: {{ name.value }}</p>
+
+*) updateName() {
+    this.name.setValue('Nancy');
+  }
+
+*) Grouping form controls - 
+    import {Component} from '@angular/core';
+import {FormGroup, FormControl} from '@angular/forms';
+@Component({
+  selector: 'app-profile-editor',
+  templateUrl: './profile-editor.component.html',
+  styleUrls: ['./profile-editor.component.css'],
+})
+export class ProfileEditorComponent {
+  profileForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+...
+  });
+...
+}
+
+*) Associate the FormGroup model and view
+   <form [formGroup]="profileForm">
+  <label for="first-name">First Name: </label>
+  <input id="first-name" type="text" formControlName="firstName">
+  <label for="last-name">Last Name: </label>
+  <input id="last-name" type="text" formControlName="lastName">
+...
+</form>
+
+*) Save form data - 
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.profileForm.value);
+  }
+
+*) Creating nested form groups - 
+   import {Component} from '@angular/core';
+import {FormGroup, FormControl} from '@angular/forms';
+@Component({
+  selector: 'app-profile-editor',
+  templateUrl: './profile-editor.component.html',
+  styleUrls: ['./profile-editor.component.css'],
+})
+export class ProfileEditorComponent {
+  profileForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    address: new FormGroup({
+      street: new FormControl(''),
+      city: new FormControl(''),
+      state: new FormControl(''),
+      zip: new FormControl(''),
+    }),
+  });
+...
+}
+
+*) Group the nested form in the template
+   <div formGroupName="address">
+    <h2>Address</h2>
+    <label for="street">Street: </label>
+    <input id="street" type="text" formControlName="street">
+    <label for="city">City: </label>
+    <input id="city" type="text" formControlName="city">
+    <label for="state">State: </label>
+    <input id="state" type="text" formControlName="state">
+    <label for="zip">Zip Code: </label>
+    <input id="zip" type="text" formControlName="zip">
+  </div>
+
+*) Updating parts of the data model - 
+   updateProfile() {
+    this.profileForm.patchValue({
+      firstName: 'Nancy',
+      address: {
+        street: '123 Drew Street',
+      },
+    });
+  }
+
+*) Validating form input - 
+    Import a validator function - 
+    import {Validators} from '@angular/forms';
+
+*) Make a field required - 
+   profileForm = this.formBuilder.group({
+    firstName: ['', Validators.required],
+    lastName: [''],
+    address: this.formBuilder.group({
+      street: [''],
+      city: [''],
+      state: [''],
+      zip: [''],
+    }),
+...
+  });
+
+*) Display form status - 
+   <p>Form Status: {{ profileForm.status }}</p>  // default is invalid
+
+*) 
+   

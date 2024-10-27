@@ -1,0 +1,73 @@
+*) refer user.detail.component.ts for inheritance
+
+*) Angular components are TypeScript classes and participate in standard JavaScript inheritance semantics.
+
+A component can extend any base class:
+
+export class ListboxBase {
+  value: string;
+}
+@Component({ ... })
+export class CustomListbox extends ListboxBase {
+  // CustomListbox inherits the `value` property.
+}
+
+*) @Component({
+  selector: 'base-listbox',
+  template: `
+    ...
+  `,
+  host: {
+    '(keydown)': 'handleKey($event)',
+  },
+})
+export class ListboxBase {
+  @Input() value: string;
+  handleKey(event: KeyboardEvent) {
+    /* ... */
+  }
+}
+@Component({
+  selector: 'custom-listbox',
+  template: `
+    ...
+  `,
+  host: {
+    '(click)': 'focusActiveOption()',
+  },
+})
+export class CustomListbox extends ListboxBase {
+  @Input() disabled = false;
+  focusActiveOption() {
+    /* ... */
+  }
+}
+In the example above, CustomListbox inherits all the information associated with ListboxBase, overriding the selector and template with its own values. CustomListbox has two inputs (value and disabled) and two event listeners (keydown and click).
+
+*) Forwarding injected dependencies - 
+   @Component({ ... })
+export class ListboxBase {
+  constructor(private element: ElementRef) { }
+}
+@Component({ ... })
+export class CustomListbox extends ListboxBase {
+  constructor(element: ElementRef) {
+    super(element);
+  }
+}
+
+*) Overriding lifecycle methods - 
+   @Component({ ... })
+export class ListboxBase {
+  protected isInitialized = false;
+  ngOnInit() {
+    this.isInitialized = true;
+  }
+}
+@Component({ ... })
+export class CustomListbox extends ListboxBase {
+  override ngOnInit() {
+    super.ngOnInit();
+    /* ... */
+  }
+}

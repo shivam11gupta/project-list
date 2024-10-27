@@ -1,0 +1,20 @@
+*) please refer for practical user.detail.component.html
+
+*) model to component and vice verce (changes in one side automatically changes in other place as well)
+   import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+  standalone: true,
+  imports: [FormsModule],
+  template: `
+    <main>
+      <h2>Hello {{ firstName }}!</h2>
+      <input type="text" [(ngModel)]="firstName" />
+    </main>
+  `
+})
+export class AppComponent {
+  firstName = 'Ada';
+}
+
+*) import the FormsModule from @angular/forms

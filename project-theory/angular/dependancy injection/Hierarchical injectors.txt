@@ -1,0 +1,54 @@
+*) Injectors in Angular have rules that you can leverage to achieve the desired visibility of injectables in your applications. By understanding these rules, you can determine whether to declare a provider at the application level, in a Component, or in a Directive.
+
+*) With hierarchical dependency injection, you can isolate sections of the application and give them their own private dependencies not shared with the rest of the application, or have parent components share certain dependencies with its child components only but not with the rest of the component tree, and so on. Hierarchical dependency injection enables you to share dependencies between different parts of the application only when and if you need to.
+  
+*) Types of injector hierarchies - 
+      a) EnvironmentInjector - The EnvironmentInjector can be configured in one of two ways by using:
+                1) The @Injectable() providedIn property to refer to root or platform - 
+                        import { Injectable } from '@angular/core';
+                        @Injectable({
+                        providedIn: 'root'  // <--provides this service in the root EnvironmentInjector
+                        })
+                        export class ItemService {
+                        name = 'telephone';
+                        }
+
+                2) The ApplicationConfig providers array - in main.ts file appconfig file provider array
+
+*)  ModuleInjector
+                        In the case of NgModule based applications, the ModuleInjector can be configured in one of two ways by using:
+
+                        The @Injectable() providedIn property to refer to root or platform
+                        The @NgModule() providers array
+
+*) Platform injector - There are two more injectors above root, an additional EnvironmentInjector and NullInjector().
+                        Consider how Angular bootstraps the application with the following in main.ts:
+                        bootstrapApplication(AppComponent, appConfig);
+                        The bootstrapApplication() method creates a child injector of the platform injector which is configured by the ApplicationConfig instance. This is the root EnvironmentInjector.
+
+*) The next parent injector in the hierarchy is the NullInjector(), which is the top of the tree. If you've gone so far up the tree that you are looking for a service in the NullInjector(), you'll get an error unless you've used @Optional() because ultimately, everything ends at the NullInjector() and it returns an error or, in the case of @Optional()
+
+*) ElementInjector - Angular creates ElementInjector hierarchies implicitly for each DOM element.
+                     Providing a service in the @Component() decorator using its providers or viewProviders property configures an ElementInjector. For example, the following TestComponent configures the ElementInjector by providing the service as follows:
+                     example - @Component({
+                                providers: [{ provide: ItemService, useValue: { name: 'lamp' } }]
+                               })
+
+*) When a component declares a dependency, Angular tries to satisfy that dependency with its own ElementInjector. If the component's injector lacks the provider, it passes the request up to its parent component's ElementInjector.
+    The requests keep forwarding up until Angular finds an injector that can handle the request or runs out of ancestor ElementInjector hierarchies.
+    If Angular doesn't find the provider in any ElementInjector hierarchies, it goes back to the element where the request originated and looks in the EnvironmentInjector hierarchy. If Angular still doesn't find the provider, it throws an error.
+
+*) Resolution modifiers - 
+       a) @Optional() - @Optional() allows Angular to consider a service you inject to be optional. This way, if it can't be resolved at runtime, Angular resolves the service as null, rather than throwing an error. 
+       b) @Self() - Use @Self() so that Angular will only look at the ElementInjector for the current component or directive.
+                    A good use case for @Self() is to inject a service but only if it is available on the current host element. To avoid errors in this situation, combine @Self() with @Optional().
+
+       c) @SkipSelf() - @SkipSelf() is the opposite of @Self(). With @SkipSelf(), Angular starts its search for a service in the parent ElementInjector, rather than in the current one. So if the parent ElementInjector were using the fern 🌿 value for emoji, but you had maple leaf 🍁 in the component's providers array, Angular would ignore maple leaf 🍁 and use fern 🌿.
+
+*) 
+Angular service attribute	Details
+@Inject(Token)=>Value	If Token is injected at this location in the logical tree, its value would be Value.
+@Provide(Token=Value)	Indicates that Token is provided with Value at this location in the logical tree.
+@ApplicationConfig	Demonstrates that a fallback EnvironmentInjector should be used at this location.
+
+*) 

@@ -1,0 +1,36 @@
+*) the <ng-content> element is neither a component nor DOM element. Instead, it is a special placeholder that tells Angular where to render content.
+
+*) // Component source
+@Component({
+  selector: 'custom-card',
+  template: `
+    <div class="card-shadow">
+      <ng-content />
+    </div>
+  `,
+})
+export class CustomCard {/* ... */}
+
+<!-- Using the component -->
+<custom-card>
+  <p>This is the projected content</p>
+</custom-card>
+
+*) Multiple content placeholders - 
+   <!-- Component template -->
+<div class="card-shadow">
+  <ng-content select="card-title"></ng-content>
+  <div class="card-divider"></div>
+  <ng-content select="card-body"></ng-content>
+</div>
+
+<!-- Rendered DOM -->
+<custom-card>
+  <div class="card-shadow">
+    <card-title>Hello</card-title>
+    <div class="card-divider"></div>
+    <card-body>Welcome to the example</card-body>
+  </div>
+</custom-card>
+
+*) 

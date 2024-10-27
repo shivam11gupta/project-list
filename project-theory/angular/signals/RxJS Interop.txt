@@ -1,0 +1,34 @@
+*) usage pending do after project assignment.
+
+*) Angular's @angular/core/rxjs-interop package provides useful utilities to integrate Angular Signals with RxJS Observables.
+   
+*) toSignal - 
+Use the toSignal function to create a signal which tracks the value of an Observable
+Like the async pipe, toSignal subscribes to the Observable immediately, which may trigger side effects. The subscription created by toSignal automatically unsubscribes from the given Observable when the component or service which calls toSignal is destroyed.
+
+   import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { interval } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+@Component({
+  template: `{{ counter() }}`,
+})
+export class Ticker {
+  counterObservable = interval(1000);
+  // Get a `Signal` representing the `counterObservable`'s value.
+  counter = toSignal(this.counterObservable, {initialValue: 0});
+}
+
+*) toObservable - 
+   Use the toObservable utility to create an Observable which tracks the value of a signal. The signal's value is monitored with an effect which emits the value to the Observable when it changes.
+   import { Component, signal } from '@angular/core';
+@Component(...)
+export class SearchResults {
+  query: Signal<string> = inject(QueryService).query;
+  query$ = toObservable(this.query);
+  results$ = this.query$.pipe(
+    switchMap(query => this.http.get('/search?q=' + query ))
+  );
+}
+As the query signal changes, the query$ Observable emits the latest query and triggers a new HTTP request.
+

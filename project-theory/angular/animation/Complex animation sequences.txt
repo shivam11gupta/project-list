@@ -1,0 +1,146 @@
+So far, we've learned simple animations of single HTML elements. Angular also lets you animate coordinated sequences, such as an entire grid or list of elements as they enter and leave a page. You can choose to run multiple animations in parallel, or run discrete animations sequentially, one following another.
+
+The functions that control complex animation sequences are:
+
+Functions	Details
+query()	Finds one or more inner HTML elements.
+stagger()	Applies a cascading delay to animations for multiple elements.
+group()	Runs multiple animation steps in parallel.
+sequence()	Runs animation steps one after another.
+
+Animate multiple elements using query() and stagger() functions - 
+After having queried child elements via query(), the stagger() function lets you define a timing gap between each queried item that is animated and thus animates elements with a delay between them.
+The following example demonstrates how to use the query() and stagger() functions to animate a list (of heroes) adding each in sequence, with a slight delay, from top to bottom.
+
+*) Use query() to look for an element entering the page that meets certain criteria
+
+For each of these elements, use style() to set the same initial style for the element. Make it transparent and use transform to move it out of position so that it can slide into place.
+
+Use stagger() to delay each animation by 30 milliseconds
+
+Animate each element on screen for 0.5 seconds using a custom-defined easing curve, simultaneously fading it in and un-transforming it
+animations: [
+    trigger('pageAnimations', [
+      transition(':enter', [
+        query('.hero', [
+          style({opacity: 0, transform: 'translateY(-100px)'}),
+          stagger(30, [
+            animate('500ms cubic-bezier(0.35, 0, 0.25, 1)', style({opacity: 1, transform: 'none'})),
+          ]),
+        ]),
+      ]),
+    ]),
+
+*) Parallel animation using group() function
+   The following example uses group()s on both :enter and :leave for two different timing configurations, thus applying two independent animations to the same element in parallel.
+      animations: [
+    trigger('flyInOut', [
+      state(
+        'in',
+        style({
+          width: '*',
+          transform: 'translateX(0)',
+          opacity: 1,
+        }),
+      ),
+      transition(':enter', [
+        style({width: 10, transform: 'translateX(50px)', opacity: 0}),
+        group([
+          animate(
+            '0.3s 0.1s ease',
+            style({
+              transform: 'translateX(0)',
+              width: '*',
+            }),
+          ),
+          animate(
+            '0.3s ease',
+            style({
+              opacity: 1,
+            }),
+          ),
+        ]),
+      ]),
+      transition(':leave', [
+        group([
+          animate(
+            '0.3s ease',
+            style({
+              transform: 'translateX(50px)',
+              width: 10,
+            }),
+          ),
+          animate(
+            '0.3s 0.2s ease',
+            style({
+              opacity: 0,
+            }),
+          ),
+        ]),
+      ]),
+    ]),
+  ],
+
+  *) Filter animation example - 
+     The filter works in real time as you type. Elements leave the page as you type each new letter and the filter gets progressively stricter. The heroes list gradually re-enters the page as you delete each letter in the filter box.
+     <label for="search">Search heroes: </label>
+<input type="text" id="search" #criteria
+       (input)="updateCriteria(criteria.value)"
+       placeholder="Search heroes">
+<ul class="heroes" [@filterAnimation]="heroesTotal">
+  @for (hero of heroes; track hero) {
+    <li class="hero">
+      <div class="inner">
+        <span class="badge">{{ hero.id }}</span>
+        <span class="name">{{ hero.name }}</span>
+      </div>
+    </li>
+  }
+</ul>
+@Component({
+...
+  animations: [
+...
+    trigger('filterAnimation', [
+      transition(':enter, * => 0, * => -1', []),
+      transition(':increment', [
+        query(
+          ':enter',
+          [
+            style({opacity: 0, width: 0}),
+            stagger(50, [animate('300ms ease-out', style({opacity: 1, width: '*'}))]),
+          ],
+          {optional: true},
+        ),
+      ]),
+      transition(':decrement', [
+        query(':leave', [stagger(50, [animate('300ms ease-out', style({opacity: 0, width: 0}))])]),
+      ]),
+    ]),
+  ],
+})
+export class HeroListPageComponent implements OnInit {
+...
+  heroesTotal = -1;
+  get heroes() {
+    return this._heroes;
+  }
+  private _heroes: Hero[] = [];
+  ngOnInit() {
+    this._heroes = HEROES;
+  }
+  updateCriteria(criteria: string) {
+    criteria = criteria ? criteria.trim() : '';
+    this._heroes = HEROES.filter((hero) =>
+      hero.name.toLowerCase().includes(criteria.toLowerCase()),
+    );
+    const newTotal = this.heroes.length;
+    if (this.heroesTotal !== newTotal) {
+      this.heroesTotal = newTotal;
+    } else if (!criteria) {
+      this.heroesTotal = -1;
+    }
+  }
+}
+
+*) 

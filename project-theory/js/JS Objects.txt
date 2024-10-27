@@ -1,0 +1,165 @@
+*) Creating a JavaScript Object - 
+   // Create an Object
+const person = {};
+
+// Add Properties
+person.firstName = "John";
+person.lastName = "Doe";
+person.age = 50;
+person.eyeColor = "blue";
+
+*) Property Default Values - 
+   function Person(first, last, age, eyecolor) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eyecolor;
+  this.nationality = "English";
+}
+
+*) General Methods - 
+    // Copies properties from a source object to a target object
+Object.assign(target, source)
+
+// Creates an object from an existing object
+Object.create(object)
+
+// Returns an array of the key/value pairs of an object
+Object.entries(object)
+
+// Creates an object from a list of keys/values
+Object.fromEntries()
+
+// Returns an array of the keys of an object
+Object.keys(object)
+
+// Returns an array of the property values of an object
+Object.values(object)
+
+// Groups object elements according to a function
+Object.groupBy(object, callback)
+
+*) JavaScript Object Prototypes - 
+   All JavaScript objects inherit properties and methods from a prototype.
+   function Person(first, last, age, eyecolor) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eyecolor;
+}
+
+const myFather = new Person("John", "Doe", 50, "blue");
+const myMother = new Person("Sally", "Rally", 48, "green");
+
+*) We also learned that you can not add a new property to an existing object constructor:
+   Person.nationality = "English";   // not allowed
+   for add new property to a constructor, you must add it to the constructor function:
+   function Person(first, last, age, eyecolor) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eyecolor;
+  this.nationality = "English";
+}
+
+*) Prototype Inheritance
+All JavaScript objects inherit properties and methods from a prototype:
+
+Date objects inherit from Date.prototype
+Array objects inherit from Array.prototype
+Person objects inherit from Person.prototype
+
+*) Adding Properties and Methods to Objects
+Sometimes you want to add new properties (or methods) to all existing objects of a given type.
+Sometimes you want to add new properties (or methods) to an object constructor.
+
+*) function Person(first, last, age, eyecolor) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eyecolor;
+}
+
+Person.prototype.nationality = "English";
+
+*) new method addition
+   function Person(first, last, age, eyecolor) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eyecolor;
+}
+
+Person.prototype.name = function() {
+  return this.firstName + " " + this.lastName;
+};
+
+*) JavaScript Object Methods - 
+    Object.entries() - returns an array of the key/value pairs in an object:
+          const person = {
+  firstName : "John",
+  lastName  : "Doe",
+  age     : 50,
+  eyeColor  : "blue"
+};
+
+let text = Object.entries(person);   // firstName,John,lastName,Doe,age,50,eyeColor,blue
+
+*) Object.values() is similar to Object.entries(), but returns a single dimension array of the object values:
+   const person = {
+  firstName : "John",
+  lastName : "Doe",
+  age : 50,
+  eyeColor : "blue"
+};
+
+let text = Object.values(person);    // John,Doe,50,blue
+
+*) Object.keys() - The Object.keys() method returns an array with the keys of an object.
+        // Create an Object
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50,
+  eyeColor: "blue"
+};
+
+// Get the Keys
+const keys = Object.keys(person);
+
+*) JavaScript Object Properties - 
+    
+*) Property Attributes - 
+   The value is one of the property's attributes.
+Other attributes are: enumerable, configurable, and writable. by default is is true
+Object.defineProperty(person, "language", {writable:false});
+
+*) JavaScript Object Accessors - 
+    JavaScript Getter (The get Keyword) - const person = {
+  firstName: "John",
+  lastName: "Doe",
+  language: "en",
+  get lang() {
+    return this.language;
+  }
+};
+
+// Display data from the object using a getter:
+document.getElementById("demo").innerHTML = person.lang;
+
+*) JavaScript Setter (The set Keyword) - 
+    const person = {
+  firstName: "John",
+  lastName: "Doe",
+  language: "",
+  set lang(lang) {
+    this.language = lang;
+  }
+};
+
+// Set an object property using a setter:
+person.lang = "en";
+
+// Display data from the object:
+document.getElementById("demo").innerHTML = person.language;
+ 

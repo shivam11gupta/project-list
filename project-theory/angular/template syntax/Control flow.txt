@@ -1,0 +1,33 @@
+*) for practical usage check file user.detail.component.html
+
+*) @if (a > b) {
+  {{a}} is greater than {{b}}
+} @else if (b > a) {
+  {{a}} is less than {{b}}
+} @else {
+  {{a}} is equal to {{b}}
+}
+
+*) Why is track in @for blocks important?
+   this allows Angular to optimize performance by executing the minimum necessary DOM operations when the data changes.
+
+*) @for (item of items; track item.name) {
+  <li> {{ item.name }}</li>
+} @empty {
+  <li aria-hidden="true"> There are no items. </li>
+}
+
+*) @switch (userPermissions) {
+  @case ('admin') {
+    <app-admin-dashboard />
+  }
+  @case ('reviewer') {
+    <app-reviewer-dashboard />
+  }
+  @case ('editor') {
+    <app-editor-dashboard />
+  }
+  @default {
+    <app-viewer-dashboard />
+  }
+}

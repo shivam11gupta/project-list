@@ -1,0 +1,27 @@
+*) Proxying to a backend server - 
+   Use proxying support to divert certain URLs to a backend server, by passing a file to the --proxy-config build option. For example, to divert all calls for http://localhost:4200/api to a server running on http://localhost:3000/api, take the following steps.
+   Create a file proxy.conf.json in your project's src/ folder.
+   {
+   "/api": {
+     "target": "http://localhost:3000",
+     "secure": false
+   }
+ }
+
+ *) In the CLI configuration file, angular.json, add the proxyConfig option to the serve target:
+    {
+   "projects": {
+     "my-app": {
+       "architect": {
+         "serve": {
+           "builder": "@angular-devkit/build-angular:dev-server",
+           "options": {
+             "proxyConfig": "src/proxy.conf.json"
+           }
+         }
+       }
+     }
+   }
+ }
+
+ *) 

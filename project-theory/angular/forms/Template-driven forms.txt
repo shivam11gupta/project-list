@@ -1,0 +1,156 @@
+*) refer login.component.html
+
+*) <!-- main app container -->
+<div class="card m-3">
+    <h5 class="card-header text-center">Angular 14 Template-Driven Form Validation</h5>
+    <div class="card-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" [mustMatch]="['password', 'confirmPassword']" novalidate>
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Title</label>
+                    <select name="title" ngModel #title="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required>
+                        <option value=""></option>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Ms">Ms</option>
+                    </select>
+                    <div *ngIf="f.submitted && title.errors" class="invalid-feedback">
+                        <div *ngIf="title.errors.required">Title is required</div>
+                    </div>
+                </div>
+                <div class="col-5 mb-3">
+                    <label class="form-label">First Name</label>
+                    <input type="text" name="firstName" ngModel #firstName="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required>
+                    <div *ngIf="f.submitted && firstName.errors" class="invalid-feedback">
+                        <div *ngIf="firstName.errors.required">First Name is required</div>
+                    </div>
+                </div>
+                <div class="col-5 mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" name="lastName" ngModel #lastName="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }" required>
+                    <div *ngIf="f.submitted && lastName.errors" class="invalid-feedback">
+                        <div *ngIf="lastName.errors.required">Last Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" name="dob" ngModel #dob="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && dob.invalid }" required pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$">
+                    <div *ngIf="f.submitted && dob.errors" class="invalid-feedback">
+                        <div *ngIf="dob.errors.required">Date of Birth is required</div>
+                        <div *ngIf="dob.errors.pattern">Date of Birth must be a valid date in the format YYYY-MM-DD</div>
+                    </div>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" name="email" ngModel #email="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email>
+                    <div *ngIf="f.submitted && email.errors" class="invalid-feedback">
+                        <div *ngIf="email.errors.required">Email is required</div>
+                        <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" ngModel #password="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6">
+                    <div *ngIf="f.submitted && password.errors" class="invalid-feedback">
+                        <div *ngIf="password.errors.required">Password is required</div>
+                        <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" name="confirmPassword" ngModel #confirmPassword="ngModel" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }" required>
+                    <div *ngIf="f.submitted && confirmPassword.errors" class="invalid-feedback">
+                        <div *ngIf="confirmPassword.errors.required">Confirm Password is required</div>
+                        <div *ngIf="confirmPassword.errors.mustMatch">Passwords must match</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-check mb-3">
+                <input type="checkbox" name="acceptTerms" id="acceptTerms" ngModel #acceptTerms="ngModel" class="form-check-input" [ngClass]="{ 'is-invalid': f.submitted && acceptTerms.invalid }" required>
+                <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
+                <div *ngIf="f.submitted && acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary me-1">Register</button>
+                <button class="btn btn-secondary" type="reset">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+*) Custom MustMatch Validator - 
+     import { AbstractControl } from '@angular/forms';
+
+// custom validator to check that two fields match
+export function MustMatch(controlName: string, matchingControlName: string) {
+    return (group: AbstractControl) => {
+        const control = group.get(controlName);
+        const matchingControl = group.get(matchingControlName);
+
+        if (!control || !matchingControl) {
+            return null;
+        }
+
+        // return if another validator has already found an error on the matchingControl
+        if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+            return null;
+        }
+
+        // set error on matchingControl if validation fails
+        if (control.value !== matchingControl.value) {
+            matchingControl.setErrors({ mustMatch: true });
+        } else {
+            matchingControl.setErrors(null);
+        }
+        return null;
+    }
+}
+
+*) Custom mustMatch Directive - 
+    import { Directive, Input } from '@angular/core';
+import { NG_VALIDATORS, Validator, ValidationErrors, FormGroup } from '@angular/forms';
+
+import { MustMatch } from './must-match.validator';
+
+@Directive({
+    selector: '[mustMatch]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: MustMatchDirective, multi: true }]
+})
+export class MustMatchDirective implements Validator {
+    @Input('mustMatch') mustMatch: string[] = [];
+
+    validate(formGroup: FormGroup): ValidationErrors | null {
+        return MustMatch(this.mustMatch[0], this.mustMatch[1])(formGroup);
+    }
+}
+
+*) 
+States	Class if true	Class if false
+The control has been visited.	ng-touched	ng-untouched
+The control's value has changed.	ng-dirty	ng-pristine
+The control's value is valid.	ng-valid	ng-invalid
+
+*) Validate form input - 
+    <input type="text" id="name" name="name" class="form-control"
+                required minlength="4" appForbiddenName="bob"
+                [(ngModel)]="actor.name" #name="ngModel">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)"
+              class="alert">
+            <div *ngIf="name.hasError('required')">
+              Name is required.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+              Name must be at least 4 characters long.
+            </div>
+            <div *ngIf="name.hasError('forbiddenName')">
+              Name cannot be Bob.
+            </div>
+          </div>
+
+ *) 
+ 

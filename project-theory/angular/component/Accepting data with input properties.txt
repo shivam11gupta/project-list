@@ -1,0 +1,75 @@
+When creating a component, you can mark specific class properties as bindable by adding the @Input decorator on the property:
+
+@Component({...})
+export class CustomSlider {
+  @Input() value = 0;
+}
+check
+This lets you bind to the property in a template:
+
+<custom-slider [value]="50" />
+check
+Angular refers to properties marked with the @Input decorator as inputs. When using a component, you pass data to it by setting its inputs.
+
+Angular records inputs statically at compile-time. 
+
+*) You can specify the required option to enforce that a given input must always have a value.
+
+@Component({...})
+export class CustomSlider {
+  @Input({required: true}) value = 0;
+}
+
+*) You can specify a transform function to change the value of an input when it's set by Angular.
+
+@Component({
+  selector: 'custom-slider',
+  ...
+})
+export class CustomSlider {
+  @Input({transform: trimString}) label = '';
+}
+function trimString(value: string | undefined) {
+  return value?.trim() ?? '';
+}
+check
+<custom-slider [label]="systemVolume" />
+
+*) Type checking
+When you specify an input transform, the type of the transform function's parameter determines the types of values that can be set to the input in a template.
+
+@Component({...})
+export class CustomSlider {
+  @Input({transform: appendPx}) widthPx: string = '';
+}
+function appendPx(value: number) {
+  return `${value}px`;
+}
+
+*) Input aliases
+You can specify the alias option to change the name of an input in templates.
+
+@Component({...})
+export class CustomSlider {
+  @Input({alias: 'sliderValue'}) value = 0;
+}
+check
+<custom-slider [sliderValue]="50" />
+
+*) In addition to the @Input decorator, you can also specify a component's inputs with the inputs property in the @Component decorator. This can be useful when a component inherits a property from a base class:
+
+// `CustomSlider` inherits the `disabled` property from `BaseSlider`.
+@Component({
+  ...,
+  inputs: ['disabled'],
+})
+export class CustomSlider extends BaseSlider { }
+check
+You can additionally specify an input alias in the inputs list by putting the alias after a colon in the string:
+
+// `CustomSlider` inherits the `disabled` property from `BaseSlider`.
+@Component({
+  ...,
+  inputs: ['disabled: sliderDisabled'],
+})
+export class CustomSlider extends BaseSlider { }

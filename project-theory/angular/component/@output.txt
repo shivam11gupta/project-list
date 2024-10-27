@@ -1,0 +1,27 @@
+*) The output() function declares an output in a directive or component. Outputs allow you to emit values to parent components.
+   import {Component, output} from '@angular/core';
+@Component({...})
+export class MyComp {
+  nameChange = output<string>()    // OutputEmitterRef<string>
+  setNewName(newName: string) {
+    this.nameChange.emit(newName);
+  }
+}
+
+<my-comp (nameChange)="showNewName($event)" />
+
+*) Aliasing an output
+Angular uses the class member name as the name of the output. You can alias outputs to change their public name to be different.
+
+class MyComp {
+  nameChange = output({alias: 'ngxNameChange'});
+}
+
+*) Why you should use output() over decorator-based @Output()?
+The output() function provides numerous benefits over decorator-based @Output and EventEmitter:
+
+Simpler mental model and API:
+• No concept of error channel, completion channels, or other APIs from RxJS.
+• Outputs are simple emitters. You can emit values using the .emit function.
+More accurate types.
+• OutputEmitterRef.emit(value) is now correctly typed, while EventEmitter has broken types and can cause runtime errors.

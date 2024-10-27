@@ -1,0 +1,68 @@
+*) Angular creates an instance of a component for every HTML element that matches the component's selector. The DOM element that matches a component's selector is that component's host element. The contents of a component's template are rendered inside its host element.
+
+*) // Component source
+@Component({
+  selector: 'profile-photo',
+  template: `
+    <img src="profile-photo.jpg" alt="Your profile photo" />
+  `,
+})
+export class ProfilePhoto {}
+check
+<!-- Using the component -->
+<h3>Your profile photo</h3>
+<profile-photo />
+<button>Upload a new profile photo</button>
+check
+<!-- Rendered DOM -->
+<h3>Your profile photo</h3>
+<profile-photo>
+  <img src="profile-photo.jpg" alt="Your profile photo" />
+</profile-photo>
+<button>Upload a new profile photo</button>
+check
+In the above example, <profile-photo> is the host element of the ProfilePhoto component.
+
+*) binding in host element - 
+   refer user.detail.component.ts
+
+   A component can bind properties, attributes, and events to its host element. This behaves identically to bindings on elements inside the component's template, but instead defined with the host property in the @Component decorator:
+
+@Component({
+  ...,
+  host: {
+    'role': 'slider',
+    '[attr.aria-valuenow]': 'value',
+    '[class.active]': 'isActive()',
+    '[tabIndex]': 'disabled ? -1 : 0',
+    '(keydown)': 'updateValue($event)',
+  },
+})
+export class CustomSlider {
+  value: number = 0;
+  disabled: boolean = false;
+  isActive = signal(false);
+  updateValue(event: KeyboardEvent) { /* ... */ }
+  /* ... */
+}
+
+*) The @HostBinding and @HostListener decorators -
+  other alternate option except except host in component given above use use @hostbinding and @hostlistener.
+  @Component({
+  /* ... */
+})
+export class CustomSlider {
+  @HostBinding('attr.aria-valuenow')
+  value: number = 0;
+  @HostBinding('tabIndex')
+  getTabIndex() {
+    return this.disabled ? -1 : 0;
+  }
+  /* ... */
+}
+export class CustomSlider {
+  @HostListener('keydown', ['$event'])
+  updateValue(event: KeyboardEvent) {
+    /* ... */
+  }
+}

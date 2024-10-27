@@ -1,0 +1,83 @@
+*) <input type="text" id="name" name="name" class="form-control"
+                required minlength="4" appForbiddenName="bob"
+                [(ngModel)]="actor.name" #name="ngModel">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)"
+              class="alert">
+            <div *ngIf="name.hasError('required')">
+              Name is required.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+              Name must be at least 4 characters long.
+            </div>
+            <div *ngIf="name.hasError('forbiddenName')">
+              Name cannot be Bob.
+            </div>
+          </div>
+
+*) Validating input in reactive forms - 
+     ngOnInit(): void {
+    this.actorForm = new FormGroup({
+      name: new FormControl(this.actor.name, [
+        Validators.required,
+        Validators.minLength(4),
+        forbiddenNameValidator(/bob/i), // <-- Here's how you pass in the custom validator.
+      ]),
+      role: new FormControl(this.actor.role),
+      skill: new FormControl(this.actor.skill, Validators.required),
+    });
+  }
+  get name() {
+    return this.actorForm.get('name');
+  }
+  get skill() {
+    return this.actorForm.get('skill');
+  }
+  its html part - 
+      <input type="text" id="name" class="form-control"
+                formControlName="name" required>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)"
+              class="alert alert-danger">
+            <div *ngIf="name.hasError('required')">
+              Name is required.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+              Name must be at least 4 characters long.
+            </div>
+            <div *ngIf="name.hasError('forbiddenName')">
+              Name cannot be Bob.
+            </div>
+          </div>
+
+
+*) Defining custom validators - 
+   /** An actor's name can't match the given regular expression */
+export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const forbidden = nameRe.test(control.value);
+    return forbidden ? {forbiddenName: {value: control.value}} : null;
+  };
+}
+
+*) Adding custom validators to reactive forms - 
+   this.actorForm = new FormGroup({
+      name: new FormControl(this.actor.name, [
+        Validators.required,
+        Validators.minLength(4),
+        forbiddenNameValidator(/bob/i), // <-- Here's how you pass in the custom validator.
+      ]),
+      role: new FormControl(this.actor.role),
+      skill: new FormControl(this.actor.skill, Validators.required),
+    });
+
+*) Control status CSS classes - 
+    .ng-valid
+.ng-invalid
+.ng-pending
+.ng-pristine
+.ng-dirty
+.ng-untouched
+.ng-touched
+.ng-submitted
+
+                                     further topic after project assignment
+

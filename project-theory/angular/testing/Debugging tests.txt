@@ -1,0 +1,12 @@
+*) If your tests aren't working as you expect them to, you can inspect and debug them in the browser.
+Debug specs in the browser in the same way that you debug an application.
+Reveal the Karma browser window. See Set up testing if you need help with this step.
+Click the DEBUG button to open a new browser tab and re-run the tests.
+Open the browser's Developer Tools. On Windows, press Ctrl-Shift-I. On macOS, press Command-Option-I.
+Pick the Sources section.
+
+Press Control/Command-P, and then start typing the name of your test file to open it.
+
+Set a breakpoint in the test.
+
+Refresh the browser, and notice how it stops at the breakpoint.

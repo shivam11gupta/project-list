@@ -1,0 +1,169 @@
+*) please refer app-routing.module.ts
+
+*) If you are working manually, make sure that you have <base href="/"> in the <head> of your index.html file. This assumes that the app folder is the application root, and uses "/".
+
+*) Importing your new components
+To use your new components, import them into app.routes.ts at the top of the file, as follows:
+import {FirstComponent} from './first/first.component';
+import {SecondComponent} from './second/second.component';
+
+*) import { Routes } from '@angular/router';
+export const routes: Routes = [];
+
+*) const routes: Routes = [
+  { path: 'first-component', component: FirstComponent },
+  { path: 'second-component', component: SecondComponent },
+];
+
+*) <ul>
+    <li><a routerLink="/first-component" routerLinkActive="active" ariaCurrentWhenActive="page">First Component</a></li>
+    <li><a routerLink="/second-component" routerLinkActive="active" ariaCurrentWhenActive="page">Second Component</a></li>
+  </ul>
+
+*) To set up a wildcard route, add the following code to your routes definition.
+   { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
+
+*) Setting up redirects - 
+   { path: '',   redirectTo: '/first-component', pathMatch: 'full' }, // redirect to `first-component`
+
+*) Nesting routes - 
+   This means you're adding a second <router-outlet> to your app, because it is in addition to the <router-outlet> in AppComponent.
+   const routes: Routes = [
+  {
+    path: 'first-component',
+    component: FirstComponent, // this is the component with the <router-outlet> in the template
+    children: [
+      {
+        path: 'child-a', // child route path
+        component: ChildAComponent, // child route component that the router renders
+      },
+      {
+        path: 'child-b',
+        component: ChildBComponent, // another child route component that the router renders
+      },
+    ],
+  },
+];
+
+*) Setting the page title
+Each page in your application should have a unique title so that they can be identified in the browser history. The Router sets the document's title using the title property from the Route config.
+
+const routes: Routes = [
+  {
+    path: 'first-component',
+    title: 'First component',
+    component: FirstComponent,  // this is the component with the <router-outlet> in the template
+    children: [
+      {
+        path: 'child-a',  // child route path
+        title: resolvedChildATitle,
+        component: ChildAComponent,  // child route component that the router renders
+      },
+      {
+        path: 'child-b',
+        title: 'child b',
+        component: ChildBComponent,  // another child route component that the router renders
+      },
+    ],
+  },
+];
+
+*) Using relative paths - 
+    <li><a routerLink="../second-component">Relative Route to second component</a></li>
+
+*) Specifying a relative route - 
+   To specify a relative route, use the NavigationExtras relativeTo property. In the component class, import NavigationExtras from the @angular/router.
+Then use relativeTo in your navigation method. After the link parameters array, which here contains items, add an object with the relativeTo property set to the ActivatedRoute, which is this.route.
+goToItems() {
+  this.router.navigate(['items'], { relativeTo: this.route });
+}
+
+*) Accessing query parameters and fragments - 
+   import {ApplicationConfig} from "@angular/core";
+import {Routes} from '@angular/router';
+import {HeroListComponent} from './hero-list.component';
+export const routes: Routes = [
+  {path: 'hero/:id', component: HeroDetailComponent}
+];
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes)],
+};
+
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+heroes$: Observable<Hero[]>;
+selectedId: number;
+heroes = HEROES;
+ngOnInit() {
+  this.heroes$ = this.route.paramMap.pipe(
+    switchMap(params => {
+      this.selectedId = Number(params.get('id'));
+      return this.service.getHeroes();
+    })
+  );
+}
+
+*) Lazy loading - 
+   const routes: Routes = [
+  {
+    path: 'lazy',
+    loadComponent: () => import('./lazy.component').then(c => c.LazyComponent)
+  }
+];
+
+*) Preventing unauthorized access - 
+  export const yourGuardFunction: CanActivateFn = (
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot) => {
+      // your  logic goes here
+  }
+  {
+  path: '/your-path',
+  component: YourComponent,
+  canActivate: [yourGuardFunction],
+}
+
+*) LocationStrategy and browser URL styles - 
+   Being a Single Page Application, the Angular applications should not send the URL to the server and should not reload the page, every time the user requests a new page. 
+   Angular supports two Location Strategies:
+
+HashLocationStrategy
+Where URL looks like http://localhost:4200/#/product
+PathLocationStrategy
+Where URL looks like http://localhost:4200/product
+
+*) Hash Style Routing - The anchor tags, when used along with the # allows us to jump to a place, within the web page.
+                        http://www.example.com/#/contact
+
+*) PathLocationStrategy Vs HashLocationStrategy - 
+   PathLocationStrategy -
+   The PathLocationStrategy is the default strategy in the Angular application.To Configure the strategy, we need to add <base href> in the <head> section of the root page (index.html) of our application
+   The Browser uses this element to construct the relative URLs for static resources (images, CSS, scripts) contained in the document.
+Pros:
+Produces a clear URL like http://example.com/foo
+Supports Server-Side Rendering
+Cons:
+Older browser does not support
+Server Support needed for this to work
+
+HashLocationStrategy -
+You can use the HashLocationStrategy by providing the useHash: true in an object as the second argument of the RouterModule.forRoot in the AppModule.
+imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    Hashlocationstrategy RouterModule.forRoot(appRoutes, { useHash: true }
+],
+Pros: 
+Supported by all browsers
+Cons:
+Produces a URL like http://example.com/#foo
+Will not Support Server-Side Rendering
+
+*) We recommend you use the HTML 5 style (PathLocationStrategy ) as your location strategy.
+Because
+It produces clean and SEO Friendly URLs that are easier for users to understand and remember.
+You can take advantage of the server-side rendering, which will make our application load faster, by rendering the pages in the server first before delivering them the client.
+Use the hash location strategy only if you have to support older browsers.
+

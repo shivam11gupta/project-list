@@ -1,0 +1,38 @@
+*) A Web API is an application programming interface for the Web.
+A Server API can extend the functionality of a web server.
+
+*) JavaScript Validation API - 
+    The History back() Method
+The back() method loads the previous URL in the windows.history list.
+function myFunction() {
+  window.history.back();
+}
+
+*) The History go() Method
+The go() method loads a specific URL from the history list:
+window.history.go(-2);
+
+*) The Web Storage API is a simple syntax for storing and retrieving data in the browser. It is very easy to use:
+   localStorage.setItem("name", "John Doe");
+localStorage.getItem("name");
+localStorage.removeItem(key);
+localStorage.clear();
+
+*) The sessionStorage Object
+The sessionStorage object is identical to the localStorage object.
+The difference is that the sessionStorage object stores data for one session.
+The data is deleted when the browser is closed.
+sessionStorage.getItem("name");
+sessionStorage.setItem("name", "John Doe");
+removeItem(keyname)
+clear()	Empty all key out of the 
+
+*) Since Fetch is based on async and await, the example above might be easier to understand like this:
+     async function getText(file) {
+  let x = await fetch(file);
+  let y = await x.text();
+  myDisplay(y);
+}
+
+
+

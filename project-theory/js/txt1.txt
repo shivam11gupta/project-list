@@ -1,0 +1,1049 @@
+*) JavaScript Output - there are four way we can give output
+    Writing into an HTML element, using innerHTML.  - document.getElementById("demo").innerHTML = 5 + 6;
+Writing into the HTML output using document.write(). - inside body anywhere <script>document.write(5 + 6)</script>
+Writing into an alert box, using window.alert(). - 
+Writing into the browser console, using console.log().
+
+*) JavaScript Statements - let x, y, z;    // Statement 1
+x = 5;          // Statement 2
+    
+*) JavaScript Keywords - 
+   Keyword	                              Description
+var	                                     Declares a variable
+let	                                    Declares a block variable
+const	                                 Declares a block constant
+if	                                     Marks a block of statements to be executed on a condition
+switch	                                 Marks a block of statements to be executed in different cases
+for	                                     Marks a block of statements to be executed in a loop
+function	                             Declares a function
+return	                                 Exits a function
+try	                                     Implements error handling to a block of statements
+
+*) JavaScript Comments - 
+    Single line comments start with //.
+     Multi-line comments start with /* and end with */.
+
+*) Variables are Containers for Storing Data - 
+    Using var - Only use var if you MUST support old browsers.
+Using let - Only use let if you can't use const or block level
+Using const - Always use const if the value should not be changed or Always use const if the type should not be changed (Arrays and Objects). block level
+
+*) Names can contain letters, digits, underscores, and dollar signs.
+Names must begin with a letter.
+Names can also begin with $ and _ (but we will not use it in this tutorial).
+Names are case sensitive (y and Y are different variables).
+Reserved words (like JavaScript keywords) cannot be used as names.
+
+*) The Assignment Operator - x = x + 5
+    ar carName;
+or:
+let carName;   // if no defined then undefined
+
+*) {
+  let x = 2;
+}
+// x can NOT be used here
+
+*) Variables declared with the var always have Global Scope.
+   {
+  var x = 2;
+}
+// x CAN be used here
+
+*) With let you can not do this:
+
+let x = "John Doe";
+
+let x = 0;
+
+*) With var you can do this:
+var x = "John Doe";
+var x = 0;
+
+*) A variable defined with the const keyword cannot be reassigned:
+   const PI = 3.141592653589793;
+PI = 3.14;      // This will give an error
+PI = PI + 10;   // This will also give an error
+
+*) // You can create a constant array:
+const cars = ["Saab", "Volvo", "BMW"];
+// You can change an element:
+cars[0] = "Toyota";
+// You can add an element:
+cars.push("Audi");
+
+*) // You can create a const object:
+const car = {type:"Fiat", model:"500", color:"white"};
+// You can change a property:
+car.color = "red";
+// You can add a property:
+car.owner = "Johnson";
+
+*) const x = 2;     // Allowed
+x = 2;           // Not allowed
+var x = 2;       // Not allowed
+let x = 2;       // Not allowed
+const x = 2;     // Not allowed
+
+
+*) carName = "Volvo";
+var carName;  // ok
+
+*) alert (carName);
+const carName = "Volvo";  // will give error
+
+*) let a = 3;
+let x = (100 + 50) * a;
+
+*) JavaScript Arithmetic Operators
+   Operator	Description
++	Addition
+-	Subtraction
+*	Multiplication
+**	Exponentiation (ES2016)
+/	Division
+%	Modulus (Division Remainder)
+++	Increment
+--	Decrement
+
+*) JavaScript Assignment Operators = 
+   Operator	Example	Same As
+=	x = y	x = y
++=	x += y	x = x + y
+-=	x -= y	x = x - y
+*=	x *= y	x = x * y
+/=	x /= y	x = x / y
+%=	x %= y	x = x % y
+**=	x **= y	x = x ** y
+
+*) JavaScript Comparison Operators - 
+   Operator	Description
+==	equal to
+===	equal value and equal type
+!=	not equal
+!==	not equal value or not equal type
+>	greater than
+<	less than
+>=	greater than or equal to
+<=	less than or equal to
+?	ternary operator
+
+*) JavaScript Bitwise Operators - 
+     Operator	Description	Example	Same as	Result	Decimal
+&	AND	5 & 1	0101 & 0001	0001	 1
+|	OR	5 | 1	0101 | 0001	0101	 5
+~	NOT	~ 5	 ~0101	1010	 10
+^	XOR	5 ^ 1	0101 ^ 0001	0100	 4
+<<	left shift	5 << 1	0101 << 1	1010	 10
+>>	right shift	5 >> 1	0101 >> 1	0010	  2
+>>>	unsigned right shift	5 >>> 1	0101 >>> 1	0010	  2
+
+*) JavaScript has 8 Datatypes
+String
+Number
+Bigint
+Boolean
+Undefined
+Null
+Symbol
+Object
+
+*) Event	Description
+onchange	An HTML element has been changed
+onclick	The user clicks an HTML element
+onmouseover	The user moves the mouse over an HTML element
+onmouseout	The user moves the mouse away from an HTML element
+onkeydown	The user pushes a keyboard key
+onload	The browser has finished loading the page
+
+*) JavaScript Strings - 
+      let carName1 = "Volvo XC60";  // Double quotes
+let carName2 = 'Volvo XC60';  // Single quotes
+Quotes Inside Quotes
+You can use quotes inside a string, as long as they don't match the quotes surrounding the string:
+let answer1 = "It's alright";
+let answer2 = "He is called 'Johnny'";
+let answer3 = 'He is called "Johnny"';
+
+*) let text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let length = text.length;
+
+*) Escape Characters
+Because strings must be written within quotes, JavaScript will misunderstand this string:
+ let text = "We are the so-called \"Vikings\" from the north.";
+
+*) Extracting String Characters - 
+    let text = "HELLO WORLD";
+let char = text.charAt(0);   // H
+
+*) let text = "HELLO WORLD";
+let char = text[0];  // H
+
+*) JavaScript String slice() - 
+let text = "Apple, Banana, Kiwi";
+let part = text.slice(7, 13);  // Banana
+If you omit the second parameter, the method will slice out the rest of the string:
+let text = "Apple, Banana, Kiwi";
+let part = text.slice(7); // Banana, Kiwi
+let text = "Apple, Banana, Kiwi";
+let part = text.slice(-12, -6); //Banana
+
+*) let text1 = "Hello World!";
+let text2 = text1.toUpperCase();
+let text1 = "Hello World!";       // String
+let text2 = text1.toLowerCase();  // text2 is text1 converted to lower
+
+*) let text1 = "Hello";
+let text2 = "World";
+let text3 = text1.concat(" ", text2);
+
+*) The trim() method removes whitespace from both sides of a string:
+   let text1 = "      Hello World!      ";
+let text2 = text1.trim();
+
+*) let text = "Hello world!";
+let result = text.repeat(2);  // Hello world!Hello world!
+
+*) let text = "Please visit Microsoft!";
+let newText = text.replace("Microsoft", "W3Schools");
+
+*) let text = "Please visit Microsoft!";
+let newText = text.replace(/MICROSOFT/i, "W3Schools"); // 
+
+*) let text = "Please visit Microsoft and Microsoft!";
+let newText = text.replace(/Microsoft/g, "W3Schools");  // Please visit W3Schools and W3Schools!
+
+*) Converting a String to an Array - 
+   text.split(",")    // Split on commas
+text.split(" ")    // Split on spaces
+text.split("|")    // Split on pipe
+
+*) The indexOf() method returns the index (position) of the first occurrence of a string in a string, or it returns -1 if the string is not found:
+   let text = "Please locate where 'locate' occurs!";
+let index = text.indexOf("locate");  // 7
+
+*) let text = "Please locate where 'locate' occurs!";
+let index = text.lastIndexOf("locate"); // 21
+
+*) let text = "The rain in SPAIN stays mainly in the plain";
+text.match(/ain/gi);  // 4 ain,AIN,ain,ain
+
+*) let text = "Hello world, welcome to the universe.";
+text.includes("world"); // true
+
+*) let text = "Hello world, welcome to the universe.";
+text.startsWith("world")
+
+*) Template Strings use back-ticks (``) rather than the quotes ("") to define a string:
+   Template Strings allow both single and double quotes inside a string:
+   let text = `He's often called "Johnny"`;
+
+*) let text =
+`The quick
+brown fox
+jumps over
+the lazy dog`;
+
+*) let firstName = "John";
+let lastName = "Doe";
+let text = `Welcome ${firstName}, ${lastName}!`;
+
+*) let x = 123e5;    // 12300000
+let y = 123e-5;   // 0.00123
+Integers (numbers without a period or exponent notation) are accurate up to 15 digits.
+let x = 999999999999999;   // x will be 999999999999999
+let y = 9999999999999999;  // y will be 10000000000000000
+
+*) If you add a number and a string, the result will be a string concatenation:
+   let x = 10;
+let y = "20";
+let z = x + y;
+
+*) let x = 10;
+let y = 20;
+let z = "30";
+let result = x + y + z;  // 3030
+
+*) let x = 100 / "Apple";  // nan 
+  typeof NaN; // is
+
+*) Operators that can be used on a JavaScript Number can also be used on a BigInt.
+   
+*) toString()	Returns a number as a string
+toExponential()	Returns a number written in exponential notation
+toFixed()	Returns a number written with a number of decimals
+toPrecision()	Returns a number written with a specified length
+valueOf()	Returns a number as a number
+
+*) parseInt("-10");
+parseInt("-10.33");
+parseInt("10");
+parseInt("10.33");
+parseInt("10 20 30");
+parseInt("10 years");
+parseInt("years 10");
+
+*) parseFloat("10");
+parseFloat("10.33");
+parseFloat("10 20 30");
+parseFloat("10 years");
+parseFloat("years 10");
+
+*)-10
+-10
+10
+10
+10
+10
+            NaN Number.parseInt("-10") + "<br>" +                  
+            Number.parseInt("-10.33") + "<br>" +
+            Number.parseInt("10") + "<br>" +
+            Number.parseInt("10.33") + "<br>" +
+            Number.parseInt("10 6") + "<br>" +  
+            Number.parseInt("10 years") + "<br>" +  
+            Number.parseInt("years 10");  
+
+*) Creating an Array - const array_name = [item1, item2, ...];
+
+*) const fruits = ["Banana", "Orange", "Apple", "Mango"];
+let size = fruits.length;
+
+*) The join() method also joins all array elements into a string.
+It behaves just like toString(), but in addition you can specify the separator:
+    const fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits.join(" * ");
+
+*) const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.pop();
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+let fruit = fruits.pop();
+
+*) The shift() method removes the first array element and "shifts" all other elements to a lower index.
+   const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.shift();
+
+*) The unshift() method adds a new element to an array (at the beginning), and "unshifts" older elements:
+   const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.unshift("Lemon");
+
+*) Array elements are accessed using their index number:
+   const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits[0] = "Kiwi";
+
+*) JavaScript Array concat()
+   const myGirls = ["Cecilie", "Lone"];
+const myBoys = ["Emil", "Tobias", "Linus"];
+const myChildren = myGirls.concat(myBoys);
+
+*) The splice() method can be used to add new items to an array:
+   const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2, 0, "Lemon", "Kiwi");
+
+*) const fruits = ["Apple", "Orange", "Apple", "Mango"];
+let position = fruits.indexOf("Apple") + 1;
+
+*) const fruits = ["Apple", "Orange", "Apple", "Mango"];
+let position = fruits.lastIndexOf("Apple") + 1;
+
+*) The find() method returns the value of the first array element that passes a test function.
+   const numbers = [4, 9, 16, 25, 29];
+let first = numbers.find(myFunction);
+function myFunction(value, index, array) {
+  return value > 18;
+}
+
+*) The sort() method sorts an array alphabetically:
+   const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.sort();
+
+*) The reverse() method reverses the elements in an array:
+  const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.reverse();
+
+*) If numbers are sorted as strings, "25" is bigger than "100", because "2" is bigger than "1".
+   Because of this, the sort() method will produce incorrect result when sorting numbers.
+   You can fix this by providing a compare function:
+   const points = [40, 100, 1, 5, 25, 10];
+points.sort(function(a, b){return a - b});
+
+*) JavaScript Array Iteration - 
+     The forEach() method calls a function (a callback function) once for each array element.
+     const numbers = [45, 4, 9, 16, 25];
+let txt = "";
+numbers.forEach(myFunction);
+
+function myFunction(value, index, array) {
+  txt += value + "<br>";
+}
+
+*) The map() method creates a new array by performing a function on each array element.
+The map() method does not execute the function for array elements without values.
+The map() method does not change the original array.
+const numbers1 = [45, 4, 9, 16, 25];
+const numbers2 = numbers1.map(myFunction);
+
+function myFunction(value, index, array) {
+  return value * 2;
+}
+
+*) JavaScript Array filter()
+The filter() method creates a new array with array elements that pass a test.
+This example creates a new array from elements with a value larger than 18:
+const numbers = [45, 4, 9, 16, 25];
+const over18 = numbers.filter(myFunction);
+
+function myFunction(value, index, array) {
+  return value > 18;
+}
+
+
+*) JavaScript Array reduce()
+The reduce() method runs a function on each array element to produce (reduce it to) a single value.
+The reduce() method works from left-to-right in the array. See also reduceRight().
+const numbers = [45, 4, 9, 16, 25];
+let sum = numbers.reduce(myFunction);
+
+function myFunction(total, value, index, array) {
+  return total + value;
+}    // the sum is 99
+
+*) An array declared with const cannot be reassigned:
+   const cars = ["Saab", "Volvo", "BMW"];
+cars = ["Toyota", "Volvo", "Audi"];    // ERROR
+
+*) // You can create a constant array:
+const cars = ["Saab", "Volvo", "BMW"];
+
+// You can change an element:
+cars[0] = "Toyota";
+
+// You can add an element:
+cars.push("Audi");
+
+*) const d = new Date(); or const d = new Date("2022-03-25");
+
+*) 9ways to create date object - 
+    new Date()
+new Date(date string)
+
+new Date(year,month)
+new Date(year,month,day)
+new Date(year,month,day,hours)
+new Date(year,month,day,hours,minutes)
+new Date(year,month,day,hours,minutes,seconds)
+new Date(year,month,day,hours,minutes,seconds,ms)
+
+new Date(milliseconds)
+
+*) const d = new Date(100000000000); // 01 January 1970 plus 100 000 000 000 milliseconds is:
+   const d = new Date(-100000000000); // January 01 1970 minus 100 000 000 000 milliseconds is:
+
+*) The toUTCString() method converts a date to a string using the UTC standard:
+    const d = new Date();
+    d.toUTCString();  // Tue, 15 Oct 2024 06:04:16 GMT  at that time was 11:34am
+
+*) The toISOString() method converts a date to a string using the ISO standard:
+   const d = new Date();
+d.toISOString();   // 2024-10-15T06:05:24.805Z
+
+*) Date Get Methods
+Method	Description
+getFullYear()	Get year as a four digit number (yyyy)
+getMonth()	Get month as a number (0-11)
+getDate()	Get day as a number (1-31)
+getDay()	Get weekday as a number (0-6)
+getHours()	Get hour (0-23)
+getMinutes()	Get minute (0-59)
+getSeconds()	Get second (0-59)
+getMilliseconds()	Get millisecond (0-999)
+getTime()	Get time (milliseconds since January 1, 1970)
+
+*) Set Date Methods
+Set Date methods are used for setting a part of a date:
+
+Method	Description
+setDate()	Set the day as a number (1-31)
+setFullYear()	Set the year (optionally month and day)
+setHours()	Set the hour (0-23)
+setMilliseconds()	Set the milliseconds (0-999)
+setMinutes()	Set the minutes (0-59)
+setMonth()	Set the month (0-11)
+setSeconds()	Set the seconds (0-59)
+setTime()	Set the time (milliseconds since January 1, 1970)
+
+*) JavaScript Math Object - 
+    Math.PI; // returns pi
+
+*) Number to Integer
+   Math.round(x)	Returns x rounded to its nearest integer .5 or more than +1 - 4.5 = 5
+Math.ceil(x)	Returns x rounded up to its nearest integer
+Math.floor(x)	Returns x rounded down to its nearest integer
+Math.trunc(x)	Returns the integer part of x (new in ES6)
+
+*) Math.pow(x, y) returns the value of x to the power of y:
+   Math.sqrt(x) returns the square root of x:
+   Math.abs(x) returns the absolute (positive) value of x:
+   Math.min() and Math.max() can be used to find the lowest or highest value in a list of arguments: // Math.min(0, 150, 30, 20, -8, -200); - -200
+
+*) // Returns a random number:
+Math.random();
+// Returns a random integer from 0 to 10:
+Math.floor(Math.random() * 11);
+// Returns a random integer from 0 to 9:
+Math.floor(Math.random() * 10);
+
+*) Boolean(10 > 9) // true 
+   
+*) Everything With a "Value" is True 
+100
+3.14
+-15
+"Hello"
+"false"
+7 + 1 + 3.14
+
+*) Everything Without a "Value" is False - 0, "", undefined, null, false, nan, 
+
+*) comparison operator example - 
+Operator	Description	Comparing	Returns	Try it
+==	         equal to	x == 8	    false	
+                        x == 5	    true	
+                        x == "5"	true	
+===	         equal value and equal type	x === 5	true	
+                        x === "5"	false	
+!=	         not equal	x != 8	    true	
+!==	         not equal value or not equal type	x !== 5	   false	
+                        x !== "5"	true	
+                        x !== 8	    true	
+>	         greater    x > 8	    false	
+<	         less than	x < 8	    true	
+>=	         greater than or equal to	x >= 8	   false	
+<=	         less than or equal to	    x <= 8	    true
+&&	         and	                   (x < 10 && y > 1)    true	
+||	         or	                       (x == 5 || y == 5)   false	
+!	         not	                   !(x == y)            true
+   
+*) The Nullish Coalescing Operator (??)
+    The ?? operator returns the first argument if it is not nullish (null or undefined).
+    let name = null;
+let text = "missing";
+let result = name ?? text;   // missing
+
+*) The Optional Chaining Operator (?.) - 
+   The ?. operator returns undefined if an object is undefined or null (instead of throwing an error).
+     // Create an object:
+const car = {type:"Fiat", model:"500", color:"white"};
+// Ask for car name:
+document.getElementById("demo").innerHTML = car?.name;
+
+*) if (time < 10) {
+  greeting = "Good morning";
+} else if (time < 20) {
+  greeting = "Good day";
+} else {
+  greeting = "Good evening";
+}
+
+*) switch (new Date().getDay()) {
+  case 6:
+    text = "Today is Saturday";
+    break;
+  case 0:
+    text = "Today is Sunday";
+    break;
+  default:
+    text = "Looking forward to the Weekend";
+}
+or for common block code - 
+   switch (new Date().getDay()) {
+  case 4:
+  case 5:
+    text = "Soon it is Weekend";
+    break;
+  case 0:
+  case 6:
+    text = "It is Weekend";
+    break;
+  default:
+    text = "Looking forward to the Weekend";
+}
+
+*) JavaScript supports different kinds of loops:
+
+for - loops through a block of code a number of times
+for/in - loops through the properties of an object
+for/of - loops through the values of an iterable object
+while - loops through a block of code while a specified condition is true
+do/while - also loops through a block of code while a specified condition is true
+
+*) for (let i = 0; i < 5; i++) {
+  text += "The number is " + i + "<br>";
+}
+
+*) And you can omit expression 1 (like when your values are set before the loop starts):
+  let i = 2;
+let len = cars.length;
+let text = "";
+for (; i < len; i++) {
+  text += cars[i] + "<br>";
+}
+Expression 3 can also be omitted (like when you increment your values inside the loop):
+let i = 0;
+let len = cars.length;
+let text = "";
+for (; i < len; ) {
+  text += cars[i] + "<br>";
+  i++;
+}
+
+*) let i = 5;
+
+for (let i = 0; i < 10; i++) {
+  // some code
+}
+// Here i is 5
+
+*) The For In Loop - 
+   const person = {fname:"John", lname:"Doe", age:25};
+
+let text = "";
+for (let x in person) {
+  text += person[x];
+}   // John Doe 25
+
+*) const numbers = [45, 4, 9, 16, 25];
+
+let txt = "";
+numbers.forEach(myFunction);
+
+function myFunction(value, index, array) {
+  txt += value;
+}
+
+*) JavaScript For Of - 
+      const cars = ["BMW", "Volvo", "Mini"];
+
+let text = "";
+for (let x of cars) {
+  text += x;
+}
+
+*) while (i < 10) {
+  text += "The number is " + i;
+  i++;
+}
+
+*) do {
+  text += "The number is " + i;
+  i++;
+}
+while (i < 10);
+
+*) for (let i = 0; i < 10; i++) {
+  if (i === 3) { break; }
+  text += "The number is " + i + "<br>";
+}   // The number is 0
+The number is 1
+The number is 2
+
+*) for (let i = 0; i < 5; i++) {
+  if (i === 3) { continue; }
+  text += "The number is " + i + "<br>";
+}  // The number is 0
+The number is 1
+The number is 2
+The number is 4
+
+*) A JavaScript Set is a collection of unique values.
+   Each value can only occur once in a Set.
+   // Create a Set
+const letters = new Set(["a","b","c"]);
+
+*) // Create a Set
+const letters = new Set();
+
+// Add Values to the Set
+letters.add("a");
+letters.add("b");
+letters.add("c");
+typeof letters;      // Returns object
+
+*) // Create a Set
+const letters = new Set(["a","b","c"]);
+
+// List all Elements
+let text = "";
+for (const x of letters) {
+  text += x;
+}    // The has() method returns true if a specified value exists in a set.
+
+*) // Create a Set
+const letters = new Set(["a","b","c"]);
+
+// Create an Iterator
+const myIterator = letters.keys();
+
+// List all Elements
+let text = "";
+for (const x of myIterator) {
+  text += x;
+} // a, b, c
+
+*) JavaScript Maps - 
+     A Map holds key-value pairs where the keys can be any datatype.
+      // Create a Map
+const fruits = new Map([
+  ["apples", 500],
+  ["bananas", 300],
+  ["oranges", 200]
+]);
+
+*) // Create a Map
+const fruits = new Map();
+
+// Set Map Values
+fruits.set("apples", 500);
+fruits.set("bananas", 300);
+fruits.set("oranges", 200);
+
+*) typeof "John"         // Returns string
+typeof ("John"+"Doe") // Returns string
+typeof 3.14           // Returns number
+typeof 33             // Returns number
+typeof (33 + 66)      // Returns number
+typeof true           // Returns boolean
+typeof false          // Returns boolean
+typeof 1234n          // Returns bigint
+typeof Symbol()       // Returns symbol
+typeof x              // Returns undefined
+typeof null           // Returns object
+typeof {name:'John'}   // Returns object
+typeof [1,2,3,4]       // Returns object
+typeof new Map()       // Returns object
+typeof new Set()       // Returns object
+typeof function (){}   // Returns function
+
+*) // Create an Array
+const fruits = ["apples", "bananas", "oranges"];
+Array.isArray(fruits);
+
+*) *) JavaScript Events - <element event='some JavaScript'>
+                       <button onclick="this.innerHTML = Date()">The time is?</button>
+
+*) Number("3.14")
+Number(Math.PI)
+Number(" ")
+Number("")
+
+*) let y = "5";      // y is a string
+let x = + y;      // x is a number
+
+*) String(x)         // returns a string from a number variable x
+String(123)       // returns a string from a number literal 123
+String(100 + 23)  // returns a string from a number from an expression
+
+*) d = new Date();
+Number(d)          // returns 1404568027739
+
+*) Method	Description
+getDate()	Get the day as a number (1-31)
+getDay()	Get the weekday a number (0-6)
+getFullYear()	Get the four digit year (yyyy)
+getHours()	Get the hour (0-23)
+getMilliseconds()	Get the milliseconds (0-999)
+getMinutes()	Get the minutes (0-59)
+getMonth()	Get the month (0-11)
+getSeconds()	Get the seconds (0-59)
+getTime()	Get the time (milliseconds since January 1, 1970)
+
+*) Destructuring Assignment Syntax
+    let {firstName, lastName} = person;
+    let [firstName, lastName] = person;
+
+*) // Create an Object
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50
+};
+
+// Destructuring
+let {firstName, lastName} = person;
+
+*) // Create an Object
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50
+};
+
+// Destructuring
+let {lastName, firstName} = person;
+
+*) // Create a String
+let name = "W3Schools";
+
+// Destructuring
+let [a1, a2, a3, a4, a5] = name;  // W
+
+*) // Create an Array
+const fruits = ["Bananas", "Oranges", "Apples", "Mangos"];
+
+// Destructuring
+let [fruit1, fruit2] = fruits;  // 
+
+*) // Create an Array
+const numbers = [10, 20, 30, 40, 50, 60, 70];
+
+// Destructuring
+const [a,b, ...rest] = numbers  // the rest is 30,40,50,60,70
+
+*) // Create a Map
+const fruits = new Map([
+  ["apples", 500],
+  ["bananas", 300],
+  ["oranges", 200]
+]);
+
+// Destructing
+let text = "";
+for (const [key, value] of fruits) {
+  text += key + " is " + value;
+}
+
+*) let firstName = "John";
+let lastName = "Doe";
+
+// Destructing
+[firstName, lastName] = [lastName, firstName];  // Doe John
+
+*) Operator	Name	Description
+&	AND	Sets each bit to 1 if both bits are 1
+|	OR	Sets each bit to 1 if one of two bits is 1
+^	XOR	Sets each bit to 1 if only one of two bits is 1
+~	NOT	Inverts all the bits
+<<	Zero fill left shift	Shifts left by pushing zeros in from the right and let the leftmost bits fall off
+>>	Signed right shift	Shifts right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off
+>>>	Zero fill right shift	Shifts right by pushing zeros in from the left, and let the rightmost bits fall off
+
+*) Operation	Result	Same as	Result
+5 & 1	1	0101 & 0001	 0001
+5 | 1	5	0101 | 0001	 0101
+~ 5	10	 ~0101	 1010
+5 << 1	10	0101 << 1	 1010
+5 ^ 1	4	0101 ^ 0001	 0100
+5 >> 1	2	0101 >> 1	 0010
+5 >>> 1	2	0101 >>> 1	 0010
+
+*) JavaScript Regular Expressions
+   let text = "Visit W3Schools!";
+let n = text.search("W3Schools");
+
+*) let text = "Visit Microsoft!";
+let result = text.replace(/microsoft/i, "W3Schools");
+
+*) Modifier	Description	Try it
+i	Perform case-insensitive matching	
+g	Perform a global match (find all)	
+m	Perform multiline matching	
+d	Perform start and end matching (New in ES2022)
+
+*) Expression	Description	Try it
+[abc]	Find any of the characters between the brackets	
+[0-9]	Find any of the digits between the brackets	
+(x|y)	Find any of the alternatives separated with |
+
+*) Metacharacter	Description	Try it
+\d	Find a digit	
+\s	Find a whitespace character	
+\b	Find a match at the beginning of a word like this: \bWORD, or at the end of a word like this: WORD\b	
+\uxxxx	Find the Unicode character specified by the hexadecimal number xxxx
+
+*) Quantifier	Description	Try it
+n+	Matches any string that contains at least one n
+n*	Matches any string that contains zero or more occurrences of n
+n?	Matches any string that contains zero or one occurrences of n
+
+*) const pattern = /e/;
+pattern.test("The best things in life are free!");  // true
+
+*) It searches a string for a specified pattern, and returns the found text as an object.
+   If no match is found, it returns an empty (null) object.
+
+*) Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-).
+let x = 100 + 50 * 3;
+let x = 100 / 50 * 3;
+
+*) Throw, and Try...Catch...Finally
+The try statement defines a code block to run (to try).
+The catch statement defines a code block to handle any error.
+The finally statement defines a code block to run regardless of the result.
+The throw statement defines a custom error.
+
+
+*) <p id="demo"></p>
+<script>
+try {
+  adddlert("Welcome guest!");
+}
+catch(err) {
+  document.getElementById("demo").innerHTML = err.message;
+}
+</script>
+
+*) throw "Too big";    // throw a text
+throw 500;          // throw a number
+
+*) <input id="demo" type="number" min="5" max="10" step="1">
+
+*) function myFunction() {
+  const message = document.getElementById("p01");
+  message.innerHTML = "";
+  let x = document.getElementById("demo").value;
+  try {
+    if(x.trim() == "") throw "is empty";
+    if(isNaN(x)) throw "is not a number";
+    x = Number(x);
+    if(x > 10) throw "is too high";
+    if(x < 5) throw "is too low";
+  }
+  catch(err) {
+    message.innerHTML = "Error: " + err + ".";
+  }
+  finally {
+    document.getElementById("demo").value = "";
+  }
+}
+
+*) {
+  let x = 2;
+}
+// x can NOT be used here
+{
+  var x = 2;
+}
+// x CAN be used here
+
+*) // code here can NOT use carName
+
+function myFunction() {
+  let carName = "Volvo";
+  // code here CAN use carName
+}
+
+// code here can NOT use carName
+
+*) function myFunction() {
+  const carName = "Volvo";   // Function Scope
+}
+
+*)  myFunction();
+// code here can use carName
+function myFunction() {
+  carName = "Volvo";
+}
+
+*) JavaScript Declarations are Hoisted
+   x = 5; // Assign 5 to x
+
+elem = document.getElementById("demo"); // Find an element
+elem.innerHTML = x;                     // Display x in the element
+
+var x; // Declare x
+
+*) var x; // Declare x
+x = 5; // Assign 5 to x
+
+elem = document.getElementById("demo"); // Find an element
+elem.innerHTML = x;                     // Display x in the element
+
+*) var x = 5; // Initialize x
+var y = 7; // Initialize y
+
+elem = document.getElementById("demo"); // Find an element
+elem.innerHTML = x + " " + y;           // Display x and y
+
+*) JavaScript Use Strict - 
+  "use strict"
+  "use strict";
+myFunction();
+
+function myFunction() {
+  y = 3.14;   // This will also cause an error because y is not declared
+}
+
+*) "use strict";
+x = {p1:10, p2:20};      // This will cause an error
+
+*) const person = {
+  firstName: "John",
+  lastName : "Doe",
+  id       : 5566,
+  fullName : function() {
+    return this.firstName + " " + this.lastName;
+  }
+};
+
+*) const person = {
+  firstName: "John",
+  lastName : "Doe",
+  id       : 5566,
+  fullName : function() {
+    return this.firstName + " " + this.lastName;
+  }
+};
+
+*) JavaScript Arrow Function - 
+   let myFunction = (a, b) => a * b;
+
+*) class ClassName {
+  constructor() { ... }
+}
+class Car {
+  constructor(name, year) {
+    this.name = name;
+    this.year = year;
+  }
+}
+
+*) const myCar1 = new Car("Ford", 2014);
+const myCar2 = new Car("Audi", 2019);
+
+*) JavaScript Modules
+   <script type="module">
+import message from "./message.js";
+</script>
+
+*) const name = "Jesse";
+const age = 40;
+
+export {name, age};
+
+*) const message = () => {
+const name = "Jesse";
+const age = 40;
+return name + ' is ' + age + 'years old.';
+};
+
+export default message;
+
+*) {
+"employees":[
+  {"firstName":"John", "lastName":"Doe"},
+  {"firstName":"Anna", "lastName":"Smith"},
+  {"firstName":"Peter", "lastName":"Jones"}
+]
+}
+
+*) 
+
+   
+
+
+
+
+
+
+
+ 
+

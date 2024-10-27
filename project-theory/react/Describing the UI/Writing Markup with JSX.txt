@@ -1,0 +1,22 @@
+*) no need any practical
+
+*) JSX is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file.
+   
+*) The Rules of JSX - 
+    1. Return a single root element - 
+       To return multiple elements from a component, wrap them with a single parent tag. ex. - <>
+  <h1>Hedy Lamarr's Todos</h1>
+  <img 
+    src="https://i.imgur.com/yXOvdOSs.jpg" 
+    alt="Hedy Lamarr" 
+    class="photo"
+  >
+  <ul>
+    ...
+  </ul>
+</>
+This empty tag is called a Fragment. Fragments let you group things without leaving any trace in the browser HTML tree.
+    
+    2. Close all the tags.
+
+    3. camelCase all most of the things!

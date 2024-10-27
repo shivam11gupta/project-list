@@ -1,0 +1,38 @@
+*) Deferrable views, also known as @defer blocks, reduce the initial bundle size of your application by deferring the loading of code that is not strictly necessary for the initial rendering of a page. This often results in a faster initial load and improvement in Core Web Vitals (CWV), primarily Largest Contentful Paint (LCP) and Time to First Byte (TTFB).
+   @defer {
+  <large-component />
+} @placeholder(minimum 500ms) {   // placeholder will show till when defer block not triggered. and parameter optional minimum used for avoid flicked after setting minimum placeholder time.
+  <p>Placeholder content</p>
+}
+
+*) The code for any components, directives, and pipes inside of the @defer block is split into a separate JavaScript file and loaded only when necessary, after the rest of the template has been rendered.
+
+*) Which dependencies are deferred? - They must be standalone, They cannot be referenced outside of @defer blocks within the same file
+
+*) It is not rendered initially– deferred content loads and renders once the specified trigger occurs or the when condition is met.
+   By default, a @defer block is triggered when the browser state becomes idle.
+
+*) The @loading block is an optional block that allows you to declare content that is shown while deferred dependencies are loading. It replaces the @placeholder block once loading is triggered.
+   @defer {
+  <large-component />
+} @loading (after 100ms; minimum 1s){
+  <img alt="loading..." src="loading.gif" />
+} @placeholder {
+  <p>Placeholder content</p>
+} @error {   // The @error block is an optional block that displays if deferred loading fails. 
+  <p>Failed to load large component.</p>
+}
+
+*) Controlling deferred content loading with triggers - 
+   
+Trigger	Description
+idle	   Triggers when the browser is idle. 
+viewport	Triggers when specified content enters the viewport. @defer (on viewport). The viewport trigger loads the deferred content when the specified content enters the viewport using the Intersection Observer API
+interact Triggers when the user interacts with specified element. @defer (on interaction). when the user interacts with the specified element through click or keydown events.
+hover	   Triggers when the mouse hovers over specified area.  @defer (on hover) hover on triggered area
+immedia  Triggers immediately after non-deferred content has finished rendering
+timer	   Triggers after a specific duration. @defer (on timer(500ms)) // The timer trigger loads the deferred content after a specified duration.
+
+*) The when trigger accepts a custom conditional expression and loads the deferred content when the condition becomes truthy.
+   @defer (when condition)
+   

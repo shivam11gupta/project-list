@@ -1,0 +1,46 @@
+*) refer profile.js
+
+*) React components use props to communicate with each other. Every parent component can pass some information to its child components by giving them props.
+
+*) Step 1: Pass props to the child component -
+  export default function Profile() {
+  return (
+    <Avatar
+      person={{ name: 'Lin Lanying', imageId: '1bX5QH6' }}
+      size={100}
+    />
+  );
+}
+  
+   Step 2: Read props inside the child component - 
+     function Avatar({ person, size }) {
+  // person and size are available here
+}
+Don’t miss the pair of { and } curlies inside of ( and ) when declaring props:
+
+function Avatar({ person, size }) {
+  // ...
+}
+This syntax is called “destructuring” and is equivalent to reading properties from a function parameter:
+
+function Avatar(props) {
+  let person = props.person;
+  let size = props.size;
+  // ...
+}
+
+*) Specifying a default value for a prop - 
+   function Avatar({ person, size = 100 }) {
+  // ...
+}
+
+*) Forwarding props with the JSX spread syntax - 
+   function Profile(props) {
+  return (
+    <div className="card">
+      <Avatar {...props} />
+    </div>
+  );
+}
+
+   

@@ -1,0 +1,190 @@
+@)  HTML Introduction
+        What is HTML?
+        A Simple HTML Document
+        What is an HTML Element?
+        Web Browsers
+        HTML Page Structure
+        HTML History
+
+@)  HTML Editors
+        Learn HTML Using Notepad or TextEdit
+
+@)  HTML Basic Examples
+        HTML Documents
+        The <!DOCTYPE> Declaration
+        HTML Headings
+        HTML Paragraphs
+        HTML Links
+        HTML Images
+        How to View HTML Source
+
+@)  HTML Elements
+        HTML Elements
+        Nested HTML Elements
+        Never Skip the End Tag
+        Empty HTML Elements
+        HTML is Not Case Sensitive
+
+@)  HTML Attributes
+        The href Attribute
+        The width and height Attributes
+        The alt Attribute
+        The style Attribute
+        The lang Attribute
+        The title Attribute
+        We Suggest: Always Use Lowercase Attributes
+        We Suggest: Always Quote Attribute Values
+        Single or Double Quotes?
+
+@)  HTML Headings
+        HTML Headings
+        Headings Are Important
+        Bigger Headings
+
+@)  HTML Paragraphs
+        HTML Display
+        HTML Horizontal Rules
+        HTML Line Breaks
+        The Poem Problem
+        Solution - The HTML <pre> Element
+
+@)  HTML Styles
+        The HTML Style Attribute
+        Background Color
+        Text Color
+        Fonts
+        font-size
+        text-align
+
+@)  HTML Text Formatting
+        HTML Formatting Elements
+        HTML <b> and <strong> Elements
+        HTML <i> and <em> Elements
+        HTML <small> Element
+        HTML <mark> Element
+        HTML <del> Element
+
+@)  HTML Quotations
+        HTML <blockquote> for Quotations
+        HTML <q> for Short Quotations
+        HTML <abbr> for Abbreviations
+        HTML <address> for Contact Information
+        HTML <cite> for Work Title
+        HTML <bdo> for Bi-Directional Override
+
+@)  HTML Comments
+        HTML Comment Tag
+        Hide Content
+        Hide Inline Content
+
+@)  HTML Colors - pass this chapter
+
+@)  HTML Styles - CSS - pass this chapter
+
+@)  HTML Links
+        HTML Links - Hyperlinks
+        HTML Links - Syntax
+        HTML Links - The target Attribute
+        Absolute URLs vs. Relative URLs
+        HTML Links - Use an Image as a Link
+        Link to an Email Address
+        Button as a Link
+        Link Titles
+        HTML Link Colors
+        Link Buttons
+        Create a Bookmark in HTML
+        
+@)  HTML Images
+        HTML Images Syntax
+        The src Attribute
+        The alt Attribute
+        Image Size - Width and Height
+        Images in Another Folder
+        Images on Another Server/Website
+        Animated Images
+        Image as a Link
+        Image Floating
+        Image Maps
+        Create Image Map
+        The Areas
+        Shape="rect"
+        Shape="circle"
+        Shape="poly"
+        Image Map and JavaScript
+        Background Image on a HTML element
+        Background Repeat
+        Background Cover
+        Background Stretch
+
+@)   HTML Favicon
+        How To Add a Favicon in HTML
+
+@)  How To Add a Favicon in HTML
+        HTML Page Title
+
+@)  HTML Tables - all topic except exercise
+
+@) HTML Lists - all topic except exercise
+
+@)   HTML Block and Inline - all topic  except exercise
+
+@)  HTML Div
+
+@) HTML class - all topic except exercise
+
+@) HTML id - all topic except exercise
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+*) The NgOptimizedImage directive makes it easy to adopt performance best practices for loading images.
+
+The directive ensures that the loading of the Largest Contentful Paint (LCP) image is prioritized by:
+
+Automatically setting the fetchpriority attribute on the <img> tag
+Lazy loading other images by default
+Automatically generating a preconnect link tag in the document head
+Automatically generating a srcset attribute
+Generating a preload hint if app is using SSR
+
+*) Getting Started - 
+   a) Import NgOptimizedImage directive - import { NgOptimizedImage } from '@angular/common'
+   b) (Optional) Set up a Loader - An image loader is not required in order to use NgOptimizedImage, but using one with an image CDN enables powerful performance features, including automatic srcsets for your images.
+   c) Enable the directive - To activate the NgOptimizedImage directive, replace your image's src attribute with ngSrc. ex. - <img ngSrc="cat.jpg">
+   d) Mark images as priority - <img ngSrc="cat.jpg" width="400" height="200" priority>
+   e) Include Width and Height - <img ngSrc="cat.jpg" width="400" height="200">
+   
+*) Using fill mode - 
+    In cases where you want to have an image fill a containing element, you can use the fill attribute. This is often useful when you want to achieve a "background image" behavior. It can also be helpful when you don't know the exact width and height of your image, but you do have a parent container with a known size that you'd like to fit your image into (see "object-fit" below).
+    When you add the fill attribute to your image, you do not need and should not include a width and height, as in this example:
+    <img ngSrc="cat.jpg" fill>
+
+*) How to migrate your background image - 
+   Here's a simple step-by-step process for migrating from background-image to NgOptimizedImage. For these steps, we'll refer to the element that has an image background as the "containing element":
+
+      Remove the background-image style from the containing element.
+      Ensure that the containing element has position: "relative", position: "fixed", or position: "absolute".
+      Create a new image element as a child of the containing element, using ngSrc to enable the NgOptimizedImage directive.
+      Give that element the fill attribute. Do not include a height and width.
+      If you believe this image might be your LCP element, add the priority attribute to the image element.
+
+*) Using placeholders - 
+    Automatic placeholders - 
+       NgOptimizedImage can display an automatic low-resolution placeholder for your image if you're using a CDN or image host that provides automatic image resizing. Take advantage of this feature by adding the placeholder attribute to your image:
+       <img ngSrc="cat.jpg" width="400" height="200" placeholder>. The default size for generated placeholders is 30px wide
+
+*) Data URL placeholders - You can also specify a placeholder using a base64 data URL without an image loader. The data url format is data:image/[imagetype];[data], where [imagetype] is the image format, just as png, and [data] is a base64 encoding of the image. That encoding can be done using the command line or in JavaScript.
+                         <img 
+  ngSrc="cat.jpg" 
+  width="400" 
+  height="200" 
+  placeholder="data:image/png;base64,iVBORw0K..."
+/>
+
+*) 
+   

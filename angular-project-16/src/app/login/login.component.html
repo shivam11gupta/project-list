@@ -1,0 +1,16 @@
+<div class="login-container">
+    <div class="login-left">
+      <h2>Login!</h2>
+      <p *ngIf="showError">Email or password is incorrect!</p>
+      <form (ngSubmit)="submitLogin()" #loginForm="ngForm">
+        <label for="email">Email</label>
+        <input type="email" [(ngModel)]="loginData.email" id="email" name="email" placeholder="Please enter email">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="loginData.password" name="password" placeholder="Please Enter password">
+        <button type="submit" class="btn btn-signin">Sign In</button>
+      </form> 
+    <button type="button" (click)="popup.showAsComponent('component message')">Show as component</button>
+    <button type="button" (click)="popup.showAsElement('custom element message')">Show as element</button>  
+  </div>
+
+  

@@ -1,0 +1,76 @@
+*) Referencing component children with queries - 
+View queries - 
+   @Component({
+  selector: 'custom-card-header',
+  ...
+})
+export class CustomCardHeader {
+  text: string;
+}
+@Component({
+  selector: 'custom-card',
+  template: '<custom-card-header>Visit sunny California!</custom-card-header>',
+})
+export class CustomCard {
+  @ViewChild(CustomCardHeader) header: CustomCardHeader;
+  ngAfterViewInit() {
+    console.log(this.header.text);
+  }
+}
+
+*) Content queries
+Content queries retrieve results from the elements in the component's content— the elements nested inside the component in the template where it's used. You can query for a single result with the @ContentChild decorator.
+@Component({
+  selector: 'custom-toggle',
+  ...
+})
+export class CustomToggle {
+  text: string;
+}
+@Component({
+  selector: 'custom-expando',
+  ...
+})
+export class CustomExpando {
+  @ContentChild(CustomToggle) toggle: CustomToggle;
+  ngAfterContentInit() {
+    console.log(this.toggle.text);
+  }
+}
+@Component({
+  selector: 'user-profile',
+  template: `
+    <custom-expando>
+      <custom-toggle>Show</custom-toggle>
+    </custom-expando>
+  `
+})
+export class UserProfile { }
+
+*) Query locators
+This first parameter for each query decorator is its locator.
+@Component({
+  ...,
+  template: `
+    <button #save>Save</button>
+    <button #cancel>Cancel</button>
+  `
+})
+export class ActionBar {
+  @ViewChild('save') saveButton: ElementRef<HTMLButtonElement>;   // here 'save' is query locator
+}
+
+*) Query options - 
+   a) Static queries - @ViewChild and @ContentChild queries accept the static option. 
+   @Component({
+  selector: 'custom-card',
+  template: '<custom-card-header>Visit sunny California!</custom-card-header>',
+})
+export class CustomCard {
+  @ViewChild(CustomCardHeader, {static: true}) header: CustomCardHeader;
+  ngOnInit() {
+    console.log(this.header.text);
+  }
+}
+By setting static: true, you guarantee to Angular that the target of this query is always present and is not conditionally rendered. This makes the result available earlier, in the ngOnInit lifecycle method.
+

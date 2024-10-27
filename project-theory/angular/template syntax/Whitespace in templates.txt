@@ -1,0 +1,14 @@
+*) By default, Angular templates do not preserve whitespace that the framework considers unnecessary.
+  ex- <!-- Total Whitespace: 20 -->
+<section>###<h3>User profile</p>###<label>#####User name#####<input>###</label>#</section>  // in browser it will be preserved
+<!-- What it looks like in the template -->
+<p>Hello         world</p>   // the between space will not be preserved as output would be 'Hello world'
+
+*) You can tell Angular to preserve whitespace in a template by specifying preserveWhitespaces: true in the @Component decorator for a template.
+    @Component({
+  /* ... */,
+  preserveWhitespaces: true,
+  template: `
+    <p>Hello         world</p>
+  `
+})

@@ -1,0 +1,41 @@
+*) theory enough not need practice
+
+*) Exporting and importing multiple components from the same file
+   gallery.js file - 
+     export function Profile() {
+  return (
+    <img
+      src="https://i.imgur.com/QIrZWGIs.jpg"
+      alt="Alan L. Hart"
+    />
+  );
+}
+
+export default function Gallery() {
+  return (
+    <section>
+      <h1>Amazing scientists</h1>
+      <Profile />
+      <Profile />
+      <Profile />
+    </section>
+  );
+}
+
+app.js file - 
+import Gallery from './Gallery.js';
+import { Profile } from './Gallery.js';
+
+export default function App() {
+  return (
+    <Profile />
+  );
+}
+
+Gallery.js:
+Exports the Profile component as a named export called Profile.
+Exports the Gallery component as a default export.
+App.js:
+Imports Profile as a named import called Profile from Gallery.js.
+Imports Gallery as a default import from Gallery.js.
+Exports the root App component as a default export.

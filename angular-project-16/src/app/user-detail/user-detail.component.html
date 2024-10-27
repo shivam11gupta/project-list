@@ -1,0 +1,33 @@
+<div class="login-container">
+    <div class="login-left">
+      @if (isEdited) {
+        <h2>{{ 'Update User Detail'  | uppercase}}</h2>
+      } @else {
+        <h2>{{ 'Add User Detail'  | myCustomTransformation : 'uppercase'}}</h2>
+      }
+      <app-user-note>Note: Please submit all the details</app-user-note>
+      <ng-template #myFragment let-firstName="userDetail">
+        <ng-container *ngIf="firstName">
+          <p>You selected first name: {{firstName}}</p>
+        </ng-container>
+        
+      </ng-template>
+      <p>_____________________________________________________________________________________</p>
+      <ng-container
+         [ngTemplateOutlet]="myFragment"
+         [ngTemplateOutletContext]="{userDetail: userData.firstName}"
+      />
+      <form (ngSubmit)="submitUser(userForm)" #userForm="ngForm">
+        <label for="firstName">FirstName</label>
+        <input type="text" [(ngModel)]="userData.firstName" id="firstName" name="firstName" placeholder="Please enter first name">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" [(ngModel)]="userData.lastName" name="lastName" placeholder="Please Enter last name">
+        <label for="mobile">Mobile No.</label>
+        <input type="text" id="email" [(ngModel)]="userData.phone" name="email" placeholder="Please Enter email">
+        <label for="mobile">Email Id</label>
+        <input type="text" id="age" [(ngModel)]="userData.email" name="age" placeholder="Please Enter age">
+        <label for="mobile">Age</label>
+        <input type="text" id="mobile" [(ngModel)]="userData.age" name="mobile" placeholder="Please Enter mobile no.">
+        <button type="submit" class="btn btn-signin">submit</button>
+      </form>   
+  </div>

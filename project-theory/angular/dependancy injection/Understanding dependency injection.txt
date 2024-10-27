@@ -1,0 +1,27 @@
+*) Two main roles exist in the DI system: dependency consumer and dependency provider.
+  Angular facilitates the interaction between dependency consumers and dependency providers using an abstraction called Injector. When a dependency is requested, the injector checks its registry to see if there is an instance already available there. If not, a new instance is created and stored in the registry. Angular creates an application-wide injector (also known as the "root" injector) during the application bootstrap process. In most cases you don't need to manually create injectors, but you should know that there is a layer that connects providers and consumers.
+
+*) Providing a dependency - 
+    Providing a service at the application root level using providedIn allows injecting the service into all other classes. Using providedIn enables Angular and JavaScript code optimizers to effectively remove services that are unused (known as tree-shaking).
+    You can provide a service by using providedIn: 'root' in the @Injectable decorator:
+    @Injectable({
+    providedIn: 'root'
+    })
+   class HeroService {}
+
+*) You can provide services at @Component level by using the providers field of the @Component decorator. In this case the HeroService becomes available to all instances of this component and other components and directives used in the template.
+   @Component({
+  standalone: true,
+  selector: 'hero-list',
+  template: '...',
+  providers: [HeroService]
+})
+class HeroListComponent {}
+
+*) Injecting/consuming a dependency - 
+   The most common way to inject a dependency is to declare it in a class constructor. When Angular creates a new instance of a component, directive, or pipe class, it determines which services or other dependencies that class needs by looking at the constructor parameter types
+   @Component({ … })
+class HeroListComponent {
+  constructor(private service: HeroService) {}
+}
+

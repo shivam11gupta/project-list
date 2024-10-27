@@ -1,0 +1,40 @@
+*) for practical please refer 
+
+*) <ng-container> is a special element in Angular that groups multiple elements together or marks a location in a template without rendering a real element in the DOM.
+ <!-- Component template -->
+<section>
+  <ng-container>
+    <h3>User bio</h3>
+    <p>Here's some info about the user</p>
+  </ng-container>
+</section>
+check
+<!-- Rendered DOM -->
+<section>
+  <h3>User bio</h3>
+  <p>Here's some info about the user</p>
+</section>
+
+*) Using <ng-container> to display dynamic contents
+@Component({
+  template: `
+    <h2>Your profile</h2>
+    <ng-container [ngTemplateOutlet]="profileTemplate()" />
+    <ng-template #admin>This is the admin profile</ng-template>
+    <ng-template #basic>This is the basic profile</ng-template>
+  `
+})
+export class UserProfile {
+  isAdmin = input(false);
+  adminTemplate = viewChild('admin', {read: TemplateRef});
+  basicTemplate = viewChild('basic', {read: TemplateRef});
+  profileTemplate = computed(() => this.isAdmin() ? this.adminTemplate() : this.basicTemplate());
+}
+
+*) Using <ng-container> with structural directives
+   <ng-container *ngIf="permissions == 'admin'">
+  <h1>Admin Dashboard</h1>
+  <admin-infographic></admin-infographic>
+</ng-container>
+
+*) 

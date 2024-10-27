@@ -1,0 +1,75 @@
+*)  Structuring state well can make a difference between a component that is pleasant to modify and debug, and one that is a constant source of bugs. Here are some tips you should consider when structuring state.
+
+*) Principles for structuring state - 
+     When you write a component that holds some state, you’ll have to make choices about how many state variables to use and what the shape of their data should be. While it’s possible to write correct programs even with a suboptimal state structure, there are a few principles that can guide you to make better choices:
+
+Group related state. If you always update two or more state variables at the same time, consider merging them into a single state variable.
+Avoid contradictions in state. When the state is structured in a way that several pieces of state may contradict and “disagree” with each other, you leave room for mistakes. Try to avoid this.
+Avoid redundant state. If you can calculate some information from the component’s props or its existing state variables during rendering, you should not put that information into that component’s state.
+Avoid duplication in state. When the same data is duplicated between multiple state variables, or within nested objects, it is difficult to keep them in sync. Reduce duplication when you can.
+Avoid deeply nested state. Deeply hierarchical state is not very convenient to update. When possible, prefer to structure state in a flat way.
+
+*) Group related state -
+   You might sometimes be unsure between using a single or multiple state variables.
+   should you do this?
+
+const [x, setX] = useState(0);
+const [y, setY] = useState(0);
+Or this?
+const [position, setPosition] = useState({ x: 0, y: 0 });
+
+*) Avoid contradictions in state - 
+   import { useState } from 'react';
+
+export default function FeedbackForm() {
+  const [text, setText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setIsSending(true);
+    await sendMessage(text);
+    setIsSending(false);
+    setIsSent(true);
+  }
+
+  if (isSent) {
+    return <h1>Thanks for feedback!</h1>
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <p>How was your stay at The Prancing Pony?</p>
+      <textarea
+        disabled={isSending}
+        value={text}
+        onChange={e => setText(e.target.value)}
+      />
+      <br />
+      <button
+        disabled={isSending}
+        type="submit"
+      >
+        Send
+      </button>
+      {isSending && <p>Sending...</p>}
+    </form>
+  );
+}
+
+// Pretend to send a message.
+function sendMessage(text) {
+  return new Promise(resolve => {
+    setTimeout(resolve, 2000);
+  });
+}
+
+
+*) Avoid redundant state - 
+   This form has three state variables: firstName, lastName, and fullName. However, fullName is redundant. You can always calculate fullName from firstName and lastName during render, so remove it from state.
+
+*) Avoid duplication in state -
+  Currently, it stores the selected item as an object in the selectedItem state variable. However, this is not great: the contents of the selectedItem is the same object as one of the items inside the items list. This means that the information about the item itself is duplicated in two places.
+
+*) 

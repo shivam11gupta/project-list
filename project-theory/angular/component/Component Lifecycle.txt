@@ -1,0 +1,68 @@
+*) Phase	Method	Summary
+Creation	constructor	Standard JavaScript class constructor . Runs when Angular instantiates the component.
+Change
+Detection
+
+ngOnInit	          Runs once after Angular has initialized all the component's inputs.
+ngOnChanges	          Runs every time the component's inputs have changed.
+ngDoCheck	          Runs every time this component is checked for changes.
+ngAfterContentInit	  Runs once after the component's content has been initialized.
+ngAfterContentChecked Runs every time this component content has been checked for changes.
+ngAfterViewInit	      Runs once after the component's view has been initialized.
+ngAfterViewChecked	  Runs every time the component's view has been checked for changes.
+Rendering	afterNextRender	Runs once the next time that all components have been rendered to the DOM.
+afterRender	          Runs every time all components have been rendered to the DOM.
+ngOnDestroy	          Runs once before the component is destroyed.
+
+*) ngOnInit() - 
+   The ngOnInit method runs after Angular has initialized all the components inputs with their initial values. A component's ngOnInit runs exactly once.
+   This step happens before the component's own template is initialized. This means that you can update the component's state based on its initial input values.
+
+*) ngOnChanges() - 
+   method runs after any component inputs have changed.During initialization, the first ngOnChanges runs before ngOnInit.
+   example - @Component({
+  /* ... */
+})
+export class UserProfile {
+  @Input() name: string = '';
+  ngOnChanges(changes: SimpleChanges) {
+    for (const inputName in changes) {
+      const inputValues = changes[inputName];
+      console.log(`Previous ${inputName} == ${inputValues.previousValue}`);
+      console.log(`Current ${inputName} == ${inputValues.currentValue}`);
+      console.log(`Is first ${inputName} change == ${inputValues.firstChange}`);
+    }
+  }
+}
+
+ *) ngDoCheck() - The ngDoCheck method runs before every time Angular checks a component's template for changes.
+You can use this lifecycle hook to manually check for state changes outside of Angular's normal change detection, manually updating the component's state.
+this will like ngonchanges but it will detect all changes if no changes in object referece also.use carefully it
+
+*) ngAfterContentInit - The ngAfterContentInit method runs once after all the children nested inside the component ( its content) have been initialized.
+                         You can use this lifecycle hook to read the results of content queries. While you can access the initialized state of these queries, attempting to change any state in this method results in an ExpressionChangedAfterItHasBeenCheckedError
+                         example - take <ng-content> example when from parent component content data is initialized in ng-content then ngAfterContentInit executed.
+
+*) ngAfterContentChecked - The ngAfterContentChecked method runs every time the children nested inside the component (its content) have been checked for changes.
+
+*) ngAfterViewInit - when the view has initialized.
+                     example - <button #temp>click me</button>, component - @ViewChild('temp') temp: ElementRef;   if you want to access or change property in temp then ngOnInit not work because view is not initialized.
+                        ngAfterViewInit() will work because view has been changed till yet.
+
+*) ngAfterViewChecked - called every time when view changes. example - counter function on click add 1 number.
+
+*) ngOnDestroy - The ngOnDestroy method runs once just before a component is destroyed. Angular destroys a component when it is no longer shown on the page, such as being hidden by NgIf or upon navigating to another page.
+                 
+*) As an alternative to the ngOnDestroy method, you can inject an instance of DestroyRef. You can register a callback to be invoked upon the component's destruction by calling the onDestroy method of DestroyRef.
+   @Component({
+  /* ... */
+})
+export class UserProfile {
+  constructor(private destroyRef: DestroyRef) {
+    destroyRef.onDestroy(() => {
+      console.log('UserProfile destruction');
+    });
+  }
+}
+   
+   

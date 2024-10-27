@@ -1,0 +1,17 @@
+   
+*) Listening to native events
+When you want to add event listeners to an HTML element, you wrap the event with parentheses, (), which allows you to specify a listener statement.
+@Component({
+  template: `
+    <input type="text" (keyup)="updateField($event)" />
+  `,
+  ...
+})
+export class AppComponent({
+  updateField(e): void {
+    console.log('Field is updated!' + e.key);
+  }
+})
+
+*) <input type="text" (keyup.enter)="updateField($event)" />
+  

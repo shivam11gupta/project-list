@@ -1,0 +1,34 @@
+*) What is hydration
+Hydration is the process that restores the server-side rendered application on the client. This includes things like reusing the server rendered DOM structures, persisting the application state, transferring application data that was retrieved already by the server, and other processes.
+
+*) Why is hydration important?
+Hydration improves application performance by avoiding extra work to re-create DOM nodes. Instead, Angular tries to match existing DOM elements to the applications structure at runtime and reuses DOM nodes when possible. This results in a performance improvement that can be measured using Core Web Vitals (CWV) statistics, such as reducing the First Input Delay (FID) and Largest Contentful Paint (LCP), as well as Cumulative Layout Shift (CLS). Improving these numbers also affects things like SEO performance.
+Without hydration enabled, server-side rendered Angular applications will destroy and re-render the application's DOM, which may result in a visible UI flicker. This re-rendering can negatively impact Core Web Vitals like LCP and cause a layout shift. Enabling hydration allows the existing DOM to be re-used and prevents a flicker.
+
+*) How do you enable hydration in Angular
+   Using Angular CLI
+If you've used Angular CLI to enable SSR (either by enabling it during application creation or later via ng add @angular/ssr), the code that enables hydration should already be included into your application.
+   Manual setup
+If you have a custom setup and didn't use Angular CLI to enable SSR, you can enable hydration manually by visiting your main application component or module and importing provideClientHydration from @angular/platform-browser. You'll then add that provider to your app's bootstrapping providers list.
+import {
+  bootstrapApplication,
+  provideClientHydration,
+} from '@angular/platform-browser';
+...
+bootstrapApplication(AppComponent, {
+  providers: [provideClientHydration()]
+});
+
+*) Verify that hydration is enabled - 
+   While running an application in dev mode, you can confirm hydration is enabled by opening the Developer Tools in your browser and viewing the console. You should see a message that includes hydration-related stats, such as the number of components and nodes hydrated. Angular calculates the stats based on all components rendered on a page, including those that come from third-party libraries.
+
+*) Capturing and replaying events - 
+   When an application is rendered on the server, it is visible in a browser as soon as produced HTML loads. Users may assume that they can interact with the page, but event listeners are not attached until hydration completes. Starting from v18, you can enable the Event Replay feature that allows to capture all events that happen before hydration and replay those events once hydration has completed. You can enable it using the withEventReplay() function, for example:
+   import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
+bootstrapApplication(App, {
+  providers: [
+    provideClientHydration(withEventReplay())
+  ]
+});
+
+*) 

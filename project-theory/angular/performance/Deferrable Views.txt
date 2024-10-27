@@ -1,0 +1,70 @@
+*) Deferrable views can be used in component template to defer the loading of select dependencies within that template. Those dependencies include components, directives, and pipes, and any associated CSS. To use this feature, you can declaratively wrap a section of your template in a @defer block which specifies the loading conditions.
+   @defer {
+  <large-component />
+}
+
+*) @defer
+The content of the main @defer block is the section of content that is lazily loaded. It will not be rendered initially, and all of the content will appear once the specified trigger or when condition is met and the dependencies have been fetched. By default, a @defer block is triggered when the browser state becomes idle.
+
+@placeholder
+By default, defer blocks do not render any content before they are triggered. The @placeholder is an optional block that declares content to show before the defer block is triggered. This placeholder content is replaced with the main content once the loading is complete. You can use any content in the placeholder section including plain HTML, components, directives, and pipes; however keep in mind the dependencies of the placeholder block are eagerly loaded.
+
+@defer {
+  <large-component />
+} @placeholder (minimum 500ms) {
+  <p>Placeholder content</p>
+}
+
+*) @loading
+The @loading block is an optional block that allows you to declare content that will be shown during the loading of any deferred dependencies. Its dependences are eagerly loaded (similar to @placeholder).
+
+For example, you could show a loading spinner. Once loading has been triggered, the @loading block replaces the @placeholder block.
+
+The @loading block accepts two optional parameters to specify the minimum amount of time that this placeholder should be shown and amount of time to wait after loading begins before showing the loading template. minimum and after parameters are specified in time increments of milliseconds (ms) or seconds (s). Just like @placeholder, these parameters exist to prevent fast flickering of content in the case that the deferred dependencies are fetched quickly. Both the minimum and after timers for the @loading block begins immediately after the loading has been triggered.
+
+@defer {
+  <large-component />
+} @loading (after 100ms; minimum 1s) {
+  <img alt="loading..." src="loading.gif" />
+}
+
+*) @error
+The @error block allows you to declare content that will be shown if deferred loading fails. Similar to @placeholder and @loading, the dependencies of the @error block are eagerly loaded. The @error block is optional.
+
+@defer {
+  <calendar-cmp />
+} @error {
+  <p>Failed to load the calendar</p>
+}
+
+*) Triggers
+When a @defer block is triggered, it replaces placeholder content with lazily loaded content. There are two options for configuring when this swap is triggered: on and when.
+on specifies a trigger condition using a trigger from the list of available triggers below. An example would be on interaction or on viewport.
+ @defer (on viewport; on timer(5s)) {
+  <calendar-cmp />
+} @placeholder {
+  <img src="placeholder.png" />
+}
+
+*) on idle
+idle will trigger the deferred loading once the browser has reached an idle state (detected using the requestIdleCallback API under the hood). This is the default behavior with a defer block.
+
+*) on viewport
+viewport would trigger the deferred block when the specified content enters the viewport using the IntersectionObserver API. This could be the placeholder content or an element reference.
+By default, the placeholder will act as the element watched for entering viewport as long as it is a single root element node.
+@defer (on viewport) {
+  <calendar-cmp />
+} @placeholder {
+  <div>Calendar placeholder</div>
+}
+
+*) on interaction
+interaction will trigger the deferred block when the user interacts with the specified element through click or keydown events.
+By default, the placeholder will act as the interaction element as long as it is a single root element node.
+@defer (on interaction) {
+  <calendar-cmp />
+} @placeholder {
+  <div>Calendar placeholder</div>
+}
+
+*) 

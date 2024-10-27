@@ -1,0 +1,77 @@
+*) This topic provides some examples of how to create reusable animations.
+
+On this page
+Create reusable animations
+More on Angular animations
+
+arrow_upward_alt
+Back to the top
+Create reusable animations
+To create a reusable animation, use the animation() function to define an animation in a separate .ts file and declare this animation definition as a const export variable. You can then import and reuse this animation in any of your application components using the useAnimation() function.
+
+src/app/animations.ts
+
+
+check
+import {animation, style, animate, trigger, transition, useAnimation} from '@angular/animations';
+export const transitionAnimation = animation([
+  style({
+    height: '{{ height }}',
+    opacity: '{{ opacity }}',
+    backgroundColor: '{{ backgroundColor }}',
+  }),
+  animate('{{ time }}'),
+]);
+In the preceding code snippet, transitionAnimation is made reusable by declaring it as an export variable.
+
+HELPFUL: The height, opacity, backgroundColor, and time inputs are replaced during runtime.
+
+You can also export a part of an animation. For example, the following snippet exports the animation trigger.
+
+src/app/animations.1.ts
+
+
+check
+import {animation, style, animate, trigger, transition, useAnimation} from '@angular/animations';
+...
+export const triggerAnimation = trigger('openClose', [
+  transition('open => closed', [
+    useAnimation(transitionAnimation, {
+      params: {
+        height: 0,
+        opacity: 1,
+        backgroundColor: 'red',
+        time: '1s',
+      },
+    }),
+  ]),
+]);
+From this point, you can import reusable animation variables in your component class. For example, the following code snippet imports the transitionAnimation variable and uses it via the useAnimation() function.
+
+src/app/open-close.component.ts
+
+
+check
+import {Component, Input} from '@angular/core';
+import {transition, trigger, useAnimation, AnimationEvent} from '@angular/animations';
+import {transitionAnimation} from './animations';
+@Component({
+  standalone: true,
+  selector: 'app-open-close-reusable',
+  animations: [
+    trigger('openClose', [
+      transition('open => closed', [
+        useAnimation(transitionAnimation, {
+          params: {
+            height: 0,
+            opacity: 1,
+            backgroundColor: 'red',
+            time: '1s',
+          },
+        }),
+      ]),
+    ]),
+  ],
+  templateUrl: 'open-close.component.html',
+  styleUrls: ['open-close.component.css'],
+})

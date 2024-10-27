@@ -1,0 +1,40 @@
+*) In previous Angular versions, most of these APIs included any somewhere in their types, and interacting with the structure of the controls, or the values themselves, was not type-safe. For example: you could write the following invalid code:
+   const emailDomain = login.value.email.domain;
+
+*) With strictly typed reactive forms, the above code does not compile, because there is no domain property on email.
+Non-typed forms are still supported, and will continue to work as before. To use them, you must import the Untyped symbols from @angular/forms:
+
+const login = new UntypedFormGroup({
+  email: new UntypedFormControl(''),
+  password: new UntypedFormControl(''),
+});
+
+*) const email = new FormControl('angularrox@gmail.com');
+   This control will be automatically inferred to have the type FormControl<string|null>. TypeScript will automatically enforce this type throughout the FormControl API, such as email.value, email.valueChanges, email.setValue(...), etc.
+
+*) It is possible to specify the type, instead of relying on inference. Consider a control that is initialized to null. Because the initial value is null, TypeScript will infer FormControl<null>, which is narrower than we want.
+
+const email = new FormControl(null);
+email.setValue('angularrox@gmail.com'); // Error!
+check
+To prevent this, we explicitly specify the type as string|null:
+
+const email = new FormControl<string|null>(null);
+email.setValue('angularrox@gmail.com');
+
+*) FormGroup and FormRecord - 
+   Angular provides the FormGroup type for forms with an enumerated set of keys, and a type called FormRecord, for open-ended or dynamic groups.
+
+*) Partial Values
+Consider again a login form:
+const login = new FormGroup({
+    email: new FormControl('', {nonNullable: true}),
+    password: new FormControl('', {nonNullable: true}),
+});
+check
+On any FormGroup, it is possible to disable controls. Any disabled control will not appear in the group's value.
+As a consequence, the type of login.value is Partial<{email: string, password: string}>. The Partial in this type means that each member might be undefined.
+More specifically, the type of login.value.email is string|undefined, and TypeScript will enforce that you handle the possibly undefined value (if you have strictNullChecks enabled).
+If you want to access the value including disabled controls, and thus bypass possible undefined fields, you can use login.getRawValue().
+
+*) 

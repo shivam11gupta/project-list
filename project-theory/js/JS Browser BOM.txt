@@ -1,0 +1,124 @@
+*) The window object is supported by all browsers. It represents the browser's window.
+
+*) window.document.getElementById("header");
+is the same as:
+document.getElementById("header");
+
+*) window.innerHeight - the inner height of the browser window (in pixels)
+window.innerWidth - the inner width of the browser window (in pixels)
+
+*) window.open() - open a new window
+window.close() - close the current window
+
+*) Window Screen - 
+      screen.width
+      screen.height
+
+*) JavaScript Window Location - 
+    document.getElementById("demo").innerHTML =
+"Page location is " + window.location.href;
+Result is:
+
+Page location is https://www.w3schools.com/js/js_window_location.asp
+
+*) document.getElementById("demo").innerHTML =
+"Page hostname is " + window.location.hostname;
+Result is:
+
+Page hostname is www.w3schools.com
+
+*) document.getElementById("demo").innerHTML =
+"Page path is " + window.location.pathname;
+Result is:
+
+Page path is /js/js_window_location.asp
+
+*) document.getElementById("demo").innerHTML =
+"Page protocol is " + window.location.protocol;
+Result is:
+
+Page protocol is https:
+
+*) document.getElementById("demo").innerHTML =
+"Port number is " + window.location.port;
+Result is:
+
+Port number is
+
+*) The window.navigator object contains information about the visitor's browser.
+   The cookieEnabled property returns true if cookies are enabled, otherwise false:
+
+Example
+<p id="demo"></p>
+
+<script>
+document.getElementById("demo").innerHTML =
+"cookiesEnabled is " + navigator.cookieEnabled;
+</script>
+
+*) JavaScript has three kind of popup boxes: Alert box, Confirm box, and Prompt box.
+
+*) An alert box is often used if you want to make sure information comes through to the user.
+   When an alert box pops up, the user will have to click "OK" to proceed.
+   window.alert("sometext");
+
+*) A confirm box is often used if you want the user to verify or accept something.
+   When a confirm box pops up, the user will have to click either "OK" or "Cancel" to proceed.
+  if (confirm("Press a button!")) {
+  txt = "You pressed OK!";
+} else {
+  txt = "You pressed Cancel!";
+}
+
+*) A prompt box is often used if you want the user to input a value before entering a page.
+   When a prompt box pops up, the user will have to click either "OK" or "Cancel" to proceed after entering an input value.
+    let person = prompt("Please enter your name", "Harry Potter");
+let text;
+if (person == null || person == "") {
+  text = "User cancelled the prompt.";
+} else {
+  text = "Hello " + person + "! How are you today?";
+}
+
+*) <button onclick="setTimeout(myFunction, 3000)">Try it</button>
+
+<script>
+function myFunction() {
+  alert('Hello');
+}
+</script>
+
+*) The clearTimeout() method stops the execution of the function specified in setTimeout().
+   myVar = setTimeout(function, milliseconds);
+clearTimeout(myVar);
+
+*) window.setInterval(function, milliseconds);
+   setInterval(myTimer, 1000);
+function myTimer() {
+  const d = new Date();
+  document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+}
+
+*) Cookies are data, stored in small text files, on your computer.
+When a web server has sent a web page to a browser, the connection is shut down, and the server forgets everything about the user.
+Cookies were invented to solve the problem "how to remember information about the user":
+When a user visits a web page, his/her name can be stored in a cookie.
+Next time the user visits the page, the cookie "remembers" his/her name.
+
+*) You can also add an expiry date (in UTC time). By default, the cookie is deleted when the browser is closed:
+   document.cookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+
+*) Read a Cookie with JavaScript - 
+   let x = document.cookie;
+
+*) Change a Cookie with JavaScript
+   With JavaScript, you can change a cookie the same way as you create it:
+   document.cookie = "username=John Smith; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+
+*) Delete a Cookie with JavaScript -
+   You don't have to specify a cookie value when you delete a cookie. Just set the expires parameter to a past date,
+   document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+*) 
+
+

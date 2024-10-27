@@ -1,0 +1,64 @@
+*) The previous sections described how to use class instances as dependencies. Aside from classes, you can also use values such as boolean, string, Date, and objects as dependencies. Angular provides the necessary APIs to make the dependency configuration flexible, so you can make those values available in DI.
+
+*) useClass vs. useExisting -
+   Normally you get an instance per provider.
+
+{provide: Class1, useClass: Class1}, 
+is equivalent with just
+Class1
+With
+
+{provide: Class1, useClass: Class3}, // Class3 may be injected using @Injectable or directly class without injectable, 2 instanse is created
+you can configure, that when a constructor requests Class1 Angular DI creates an instance of Class3 and passes it to the constructor.
+
+{provide: Class2, useExisting: Class2(class name may be differ)}  // this is just alias so it has be to injected and only 1 instance is created in this case.
+doesn't result in an instance being created, but you can see this rather than an alias. If a constructor requests Class2, Angular DI looks for another provider for key Class2 and injects the instance from this Class2 provider. You can see useExisting like a reference to another provider or an alias.
+   in general
+
+useFactory - The Factory Provider useFactory expects us to provide a function. It invokes the function and injects the returned value. We can also add optional arguments to the factory function using the deps array. The deps array specifies how to inject the arguments.
+             example - providers: [
+    { provide: LoggerService, useClass: LoggerService },
+ 
+    { provide: 'USE_FAKE', useValue: true },
+ 
+    {
+      provide: ProductService,
+      useFactory: (USE_FAKE, LoggerService) =>
+        USE_FAKE ? new FakeProductService() : new ProductService(LoggerService),
+      deps: ['USE_FAKE', LoggerService]
+    }
+  ]
+  We need to pass all the dependency of the as the argument to the factory function. The injector uses the deps array (third argument) to resolve the dependencies and inject them.
+   useFactory: (USE_FAKE, LoggerService)
+ 
+inside the factory function, we either return FakeProductService or ProductService depending on the value of USE_FAKE
+=>
+   USE_FAKE ? new FakeProductService() : new ProductService(LoggerService)
+ 
+In the last option, we need to tell the Injector how to inject the dependencies of the Factory function itself. Note that order must be the same as that of the factory function argument.
+deps: ['USE_FAKE', LoggerService]
+
+*) Value Provider: useValue - 
+    in use value we provide and value it may be boolean or string or function -
+    example - in app module providers: [
+    { provide: 'USE_FAKE', useValue: true },   or
+
+    { provide: 'APP_CONFIG', useValue: APP_CONFIG },   where const APP_CONFIG = Object.freeze({
+  serviceURL: 'www.serviceUrl.comapi',
+  IsDevleomentMode: true
+});
+or
+    {
+      provide: 'FUNC',
+      useValue: () => {
+        return 'hello';
+      }
+    }
+  ]
+  in component - constructor(
+    @Inject('USE_FAKE') public useFake: string,
+    @Inject('APP_CONFIG') public appConfig: any,
+    @Inject('FUNC') public someFunc: any
+  ) {
+    console.log(appConfig);
+  }

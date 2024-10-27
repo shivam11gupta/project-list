@@ -1,0 +1,12 @@
+*) for practical example refer user.detail.Component.html
+
+*) Render dynamic text with text interpolation -
+   @Component({
+  template: `
+    <p>Your color preference is {{ theme }}.</p>
+  `,
+  ...
+})
+export class AppComponent {
+  theme = 'dark';
+}

@@ -1,0 +1,61 @@
+*) Services with dependencies
+   Services often depend on other services that Angular injects into the constructor. In many cases, you can create and inject these dependencies by hand while calling the service's constructor.
+   @Injectable()
+export class MasterService {
+  constructor(private valueService: ValueService) {}
+  getValue() {
+    return this.valueService.getValue();
+  }
+}
+The first test creates a ValueService with new and passes it to the MasterService constructor.
+However, injecting the real service rarely works well as most dependent services are difficult to create and control.
+Instead, mock the dependency, use a dummy value, or create a spy on the pertinent service method.
+
+*) Testing services with the TestBed - 
+   The TestBed is the most important of the Angular testing utilities. The TestBed creates a dynamically-constructed Angular test module that emulates an Angular @NgModule.
+   beforeEach(() => {
+      TestBed.configureTestingModule({providers: [ValueService]});
+      service = TestBed.inject(ValueService);
+    });
+
+*) 
+
+*) Testing services with the TestBed - 
+   let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let heroService: HeroService;
+  beforeEach(() => {
+    // TODO: spy on other methods too
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    heroService = new HeroService(httpClientSpy);
+  });
+  it('should return expected heroes (HttpClient called once)', (done: DoneFn) => {
+    const expectedHeroes: Hero[] = [
+      {id: 1, name: 'A'},
+      {id: 2, name: 'B'},
+    ];
+    httpClientSpy.get.and.returnValue(asyncData(expectedHeroes));
+    heroService.getHeroes().subscribe({
+      next: (heroes) => {
+        expect(heroes).withContext('expected heroes').toEqual(expectedHeroes);
+        done();
+      },
+      error: done.fail,
+    });
+    expect(httpClientSpy.get.calls.count()).withContext('one call').toBe(1);
+  });
+  it('should return an error when the server returns a 404', (done: DoneFn) => {
+    const errorResponse = new HttpErrorResponse({
+      error: 'test 404 error',
+      status: 404,
+      statusText: 'Not Found',
+    });
+    httpClientSpy.get.and.returnValue(asyncError(errorResponse));
+    heroService.getHeroes().subscribe({
+      next: (heroes) => done.fail('expected an error, not heroes'),
+      error: (error) => {
+        expect(error.message).toContain('test 404 error');
+        done();
+      },
+    });
+  });
+

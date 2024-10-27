@@ -1,0 +1,39 @@
+*) You can define different named build configurations for your project, such as development and staging, with different defaults.
+
+*) Angular CLI configurations - 
+   
+*) Configure environment-specific defaults
+   ng generate environments
+   The project's src/environments/ directory contains the base configuration file, 
+
+*) The build command uses this as the build target when no environment is specified. You can add further variables, either as additional properties on the environment object, or as separate objects. For example, the following adds a default for a variable to the default environment:
+
+export const environment = {
+  production: true,
+  apiUrl: 'http://my-prod-url'
+};
+
+*) You can add target-specific configuration files, such as environment.development.ts. The following content sets default values for the development build target:
+
+export const environment = {
+  production: false,
+  apiUrl: 'http://my-dev-url'
+};
+
+*) Using environment-specific variables in your app
+   import { environment } from './../environments/environment';
+// Fetches from `http://my-prod-url` in production, `http://my-dev-url` in development.
+fetch(environment.apiUrl);
+
+ *)  angular.json 
+"configurations": {
+    "development": {
+      "fileReplacements": [
+          {
+            "replace": "src/environments/environment.ts",
+            "with": "src/environments/environment.development.ts"
+          }
+        ],
+        …
+
+*) 

@@ -1,0 +1,42 @@
+*) Providing HttpClient through dependency injection
+HttpClient is provided using the provideHttpClient helper function, which most apps include in the application providers in app.config.ts.
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(),
+  ]
+};
+
+*) If your app is using NgModule-based bootstrap instead, you can include provideHttpClient in the providers of your app's NgModule: 
+   @NgModule({
+  providers: [
+    provideHttpClient(),
+  ],
+  // ... other application configuration
+})
+export class AppModule {}
+
+*) You can then inject the HttpClient service as a dependency of your components, services, or other classes:
+   @Injectable({providedIn: 'root'})
+   export class ConfigService {
+   constructor(private http: HttpClient) {
+    // This service can now make HTTP requests via `this.http`.
+  }
+}
+
+*) Configuring features of HttpClient - 
+   a) withFetch - export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+      withFetch(),
+    ),
+  ]
+};
+By default, HttpClient uses the XMLHttpRequest API to make requests. The withFetch feature switches the client to use the fetch API instead.
+fetch is a more modern API and is available in a few environments where XMLHttpRequest is not supported. It does have a few limitations, such as not producing upload progress events.
+
+  b) withInterceptors(...)  - withInterceptors configures the set of interceptor functions which will process requests made through HttpClient
+
+  c) 
+
+
+

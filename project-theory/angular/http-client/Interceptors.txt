@@ -1,0 +1,48 @@
+*) Interceptors are generally functions which you can run for each request, and have broad capabilities to affect the contents and overall flow of requests and responses
+
+*) You can use interceptors to implement a variety of common patterns, such as:
+
+Adding authentication headers to outgoing requests to a particular API.
+Retrying failed requests with exponential backoff.
+Caching responses for a period of time, or until invalidated by mutations.
+Customizing the parsing of responses.
+Measuring server response times and log them.
+Driving UI elements such as a loading spinner while network operations are in progress.
+Collecting and batch requests made within a certain timeframe.
+Automatically failing requests after a configurable deadline or timeout.
+Regularly polling the server and refreshing results.
+
+*) example of interceptor - export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  console.log(req.url);
+  return next(req);
+}
+
+*) Configuring interceptors - 
+    You declare the set of interceptors to use when configuring HttpClient through dependency injection, by using the withInterceptors feature:
+    bootstrapApplication(AppComponent, {providers: [
+  provideHttpClient(
+    withInterceptors([loggingInterceptor, cachingInterceptor]),
+  )
+]});
+
+*) Intercepting response events - 
+     An interceptor may transform the Observable stream of HttpEvents returned by next in order to access or manipulate the response. Because this stream includes all response events, inspecting the .type of each event may be necessary in order to identify the final response object.
+      export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  return next(req).pipe(tap(event => {
+    if (event.type === HttpEventType.Response) {
+      console.log(req.url, 'returned a response with status', event.status);
+    }
+  }));
+}
+
+*) Modifying requests - 
+    Most aspects of HttpRequest and HttpResponse instances are immutable, and interceptors cannot directly modify them. Instead, interceptors apply mutations by cloning these objects using the .clone() operation, and specifying which properties should be mutated in the new instance. This might involve performing immutable updates on the value itself (like HttpHeaders or HttpParams).
+    const reqWithHeader = req.clone({
+  headers: req.headers.set('X-New-Header', 'new header value'),
+});
+
+*) Dependency injection in interceptors - 
+
+ further after interview because current no required
+   
+   

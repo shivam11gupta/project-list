@@ -1,0 +1,153 @@
+*) for examplet please refer 
+
+1) The main Angular modules for animations are @angular/animations and @angular/platform-browser.
+   import {Component, HostBinding} from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
+
+*) @Component({
+  standalone: true,
+  selector: 'app-open-close',
+  animations: [
+    trigger('openClose', [
+      // ...
+      state(
+        'open',
+        style({
+          height: '200px',
+          opacity: 1,
+          backgroundColor: 'yellow',
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          height: '100px',
+          opacity: 0.8,
+          backgroundColor: 'blue',
+        }),
+      ),
+      transition('open => closed', [animate('1s')]),
+      transition('closed => open', [animate('0.5s')]),
+...
+    ]),
+  ],
+  templateUrl: 'open-close.component.html',
+  styleUrls: ['open-close.component.css'],
+})
+export class OpenCloseComponent {
+...
+  isOpen = true;
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
+...
+}
+
+*) <nav>
+  <button type="button" (click)="toggle()">Toggle Open/Close</button>
+</nav>
+<div [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container">
+  <p>The box is now {{ isOpen ? 'Open' : 'Closed' }}!</p>
+</div>
+
+*) animations: [
+    trigger('openClose', [
+      // ...
+      state(
+        'open',
+        style({
+          height: '200px',
+          opacity: 1,
+          backgroundColor: 'yellow',
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          height: '100px',
+          opacity: 0.8,
+          backgroundColor: 'blue',
+        }),
+      ),
+...
+      transition('* => closed', [animate('1s')]),
+      transition('* => open', [animate('0.5s')]),
+...
+    ]),
+  ],
+  transition('open <=> closed', [animate('0.5s')]),
+
+*) Use wildcard state with multiple transition states
+   animations: [
+    trigger('openClose', [
+      // ...
+      state(
+        'open',
+        style({
+          height: '200px',
+          opacity: 1,
+          backgroundColor: 'yellow',
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          height: '100px',
+          opacity: 0.8,
+          backgroundColor: 'blue',
+        }),
+      ),
+      transition('open => closed', [animate('1s')]),
+      transition('closed => open', [animate('0.5s')]),
+      transition('* => closed', [animate('1s')]),
+      transition('* => open', [animate('0.5s')]),
+      transition('open <=> closed', [animate('0.5s')]),
+      transition('* => open', [animate('1s', style({opacity: '*'}))]),
+      transition('* => *', [animate('1s')]),
+
+*) transition('* => open', [animate('1s', style({opacity: '*'}))]),
+
+*) animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [style({transform: 'translateX(-100%)'}), animate(100)]),
+      transition('* => void', [animate(100, style({transform: 'translateX(100%)'}))]),
+    ]),
+  ],
+
+*) transition ( ':enter', [ … ] );  // alias for void => *
+transition ( ':leave', [ … ] );  // alias for * => void
+
+*) Use *ngIf and *ngFor with :enter and :leave - 
+   @if (isShown) {
+  <div @myInsertRemoveTrigger class="insert-remove-container">
+    <p>The box is inserted</p>
+  </div>
+}
+
+*) Transition :increment and :decrement - 
+trigger('filterAnimation', [
+      transition(':enter, * => 0, * => -1', []),
+      transition(':increment', [
+        query(
+          ':enter',
+          [
+            style({opacity: 0, width: 0}),
+            stagger(50, [animate('300ms ease-out', style({opacity: 1, width: '*'}))]),
+          ],
+          {optional: true},
+        ),
+      ]),
+      transition(':decrement', [
+        query(':leave', [stagger(50, [animate('300ms ease-out', style({opacity: 0, width: 0}))])]),
+      ]),
+    ]),
+
+*) 

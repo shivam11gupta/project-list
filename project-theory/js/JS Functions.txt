@@ -1,0 +1,308 @@
+*) function functionName(parameters) {
+  // code to be executed
+}
+
+*) A JavaScript function can also be defined using an expression.
+   A function expression can be stored in a variable:
+   const x = function (a, b) {return a * b};
+
+*) Function Hoisting
+   myFunction(5);
+function myFunction(y) {
+  return y * y;
+}
+
+*) Self-Invoking Functions - 
+   (function () {
+  let x = "Hello!!";  // I will invoke myself
+})();
+
+*) Functions are Objects - 
+But, JavaScript functions can best be described as objects.
+JavaScript functions have both properties and methods.
+   function myFunction(a, b) {
+  return arguments.length;
+}
+
+*) Arrow Functions - 
+   // ES6
+const x = (x, y) => x * y;
+
+*) JavaScript Function Parameters - 
+    If a function is called with missing arguments (less than declared), the missing values are set to undefined.
+    function myFunction(x, y) {
+  if (y === undefined) {
+    y = 2;
+  }
+}
+
+*) default parameter in function - 
+   function myFunction(x, y = 10) {
+  return x + y;
+}
+myFunction(5);
+
+*) Function Rest Parameter - The rest parameter (...) allows a function to treat an indefinite number of arguments as an array:
+    function sum(...args) {
+  let sum = 0;
+  for (let arg of args) sum += arg;
+  return sum;
+}
+
+let x = sum(4, 9, 16, 25, 29, 100, 66, 77);
+
+*) If a function is called with too many arguments (more than declared), these arguments can be reached using the arguments object.
+x = sumAll(1, 123, 500, 115, 44, 88);
+
+function sumAll() {
+  let sum = 0;
+  for (let i = 0; i < arguments.length; i++) {
+    sum += arguments[i];
+  }
+  return sum;
+}
+
+*) pass by value - 
+     function Passbyvalue(a, b) {
+    let tmp;
+    tmp = b;
+    b = a;
+    a = tmp;
+    console.log(`Inside Pass by value 
+        function -> a = ${a} b = ${b}`);
+}
+
+let a = 1;
+let b = 2;
+console.log(`Before calling Pass by value 
+        Function -> a = ${a} b = ${b}`);
+
+Passbyvalue(a, b);
+
+console.log(`After calling Pass by value 
+       Function -> a =${a} b = ${b}`);
+
+output - Before calling Pass By Reference 
+    Function -> a = 10 b = 20
+Inside Pass By Reference 
+        Function -> a = 20 b = 10
+After calling Pass By Reference 
+    Function -> a = 20 b = 10
+
+*) pass by reference - 
+   function PassbyReference(obj) {
+    let tmp = obj.a;
+    obj.a = obj.b;
+    obj.b = tmp;
+
+    console.log(`Inside Pass By Reference 
+        Function -> a = ${obj.a} b = ${obj.b}`);
+}
+
+let obj = {
+    a: 10,
+    b: 20
+
+}
+console.log(`Before calling Pass By Reference 
+    Function -> a = ${obj.a} b = ${obj.b}`);
+
+PassbyReference(obj)
+
+console.log(`After calling Pass By Reference 
+    Function -> a = ${obj.a} b = ${obj.b}`);
+
+output - Updating the object reference -> 
+Before calling Pass By 
+        Reference Function -> obj
+{ a: 10, b: 20 }
+Inside Pass by 
+        Reference Function -> obj 
+{ a: 10, b: 20, c: 'GEEKSFORGEEKS' }
+Aft...
+
+*) JavaScript Function Invocation - we will use invoke, because a JavaScript function can be invoked without being called.
+     myFunction() and window.myFunction() is the same function:
+
+*) In JavaScript, the this keyword refers to an object.
+The this keyword refers to different objects depending on how it is used:
+
+*) Invoking a Function as a Method - 
+   const myObject = {
+  firstName:"John",
+  lastName: "Doe",
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  }
+}
+myObject.fullName();         // Will return "John Doe"
+The fullName method is a function. The function belongs to the object. myObject is the owner of the function.
+The thing called this, is the object that "owns" the JavaScript code. In this case the value of this is myObject.
+
+*) Invoking a Function with a Function Constructor
+   // This is a function constructor:
+function myFunction(arg1, arg2) {
+  this.firstName = arg1;
+  this.lastName  = arg2;
+}
+
+// This creates a new object
+const myObj = new myFunction("John", "Doe");
+
+// This will return "John"
+myObj.firstName;
+
+*) JavaScript Function call() - With the call() method, you can write a method that can be used on different objects.
+   The this keyword refers to different objects depending on how it is used:
+
+*) In an object method, this refers to the object.
+Alone, this refers to the global object.
+In a function, this refers to the global object.
+In a function, in strict mode, this is undefined.
+In an event, this refers to the element that received the event.
+Methods like call(), apply(), and bind() can refer this to any object.
+
+*) The JavaScript call() Method - 
+   With call(), an object can use a method belonging to another object.
+   const person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+const person1 = {
+  firstName:"John",
+  lastName: "Doe"
+}
+const person2 = {
+  firstName:"Mary",
+  lastName: "Doe"
+}
+
+// This will return "John Doe":
+person.fullName.call(person1);
+
+*) call() with parameter passing
+const person = {
+  fullName: function(city, country) {
+    return this.firstName + " " + this.lastName + "," + city + "," + country;
+  }
+}
+
+const person1 = {
+  firstName:"John",
+  lastName: "Doe"
+}
+
+person.fullName.call(person1, "Oslo", "Norway");
+
+*) JavaScript Function apply() - With the apply() method, you can write a method that can be used on different objects.
+    const person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+
+const person1 = {
+  firstName: "Mary",
+  lastName: "Doe"
+}
+
+// This will return "Mary Doe":
+person.fullName.apply(person1);
+
+*) The Difference Between call() and apply() - 
+     The call() method takes arguments separately.
+The apply() method takes arguments as an array.
+
+const person = {
+  fullName: function(city, country) {
+    return this.firstName + " " + this.lastName + "," + city + "," + country;
+  }
+}
+const person1 = {
+  firstName:"John",
+  lastName: "Doe"
+}
+person.fullName.apply(person1, ["Oslo", "Norway"]);
+
+*) Simulate a Max Method on Arrays - 
+   Math.max.apply(null, [1,2,3]); // Will also return 3
+
+*) JavaScript Function bind() - 
+    With the bind() method, an object can borrow a method from another object
+    The example below creates 2 objects (person and member).
+    The member object borrows the fullname method from the person object:
+    const person = {
+  firstName:"John",
+  lastName: "Doe",
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  }
+}
+
+const member = {
+  firstName:"Hege",
+  lastName: "Nilsen",
+}
+
+let fullName = person.fullName.bind(member);
+
+bind another usage - 
+    When a function is used as a callback, this is lost.
+    This example will try to display the person name after 3 seconds, but it will display undefined instead:
+    const person = {
+  firstName:"John",
+  lastName: "Doe",
+  display: function () {
+    let x = document.getElementById("demo");
+    x.innerHTML = this.firstName + " " + this.lastName;
+  }
+}
+
+setTimeout(person.display, 3000);    // output undefined undefined
+
+to solve this issue we use bind() methon
+const person = {
+  firstName:"John",
+  lastName: "Doe",
+  display: function () {
+    let x = document.getElementById("demo");
+    x.innerHTML = this.firstName + " " + this.lastName;
+  }
+}
+
+let display = person.display.bind(person);
+setTimeout(display, 3000);
+
+*) JavaScript Closures - 
+   JavaScript variables can belong to the local or global scope.
+   Global variables can be made local (private) with closures.
+
+*) Variables created without a declaration keyword (var, let, or const) are always global, even if they are created inside a function.
+   function myFunction() {
+  a = 4;
+}
+
+*) / Function to increment counter
+function add() {
+  let counter = 0;
+  counter += 1;
+  return counter;
+}
+
+// Call add() 3 times
+add();
+add();
+add();
+
+//The counter should now be 3. But it is 1.
+
+It did not work because we reset the local counter every time we call the function.
+ A JavaScript inner function can solve this.
+
+ *) 
+   
+   
+   
+   
+   

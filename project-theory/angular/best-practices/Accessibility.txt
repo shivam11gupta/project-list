@@ -1,0 +1,24 @@
+*) please refer 
+
+*) The web is used by a wide variety of people, including those who have visual or motor impairments. A variety of assistive technologies are available that make it much easier for these groups to interact with web-based software applications
+   Building accessible web experience often involves setting Accessible Rich Internet Applications (ARIA) attributes to provide semantic meaning where it might otherwise be missing.
+   <!-- Use attr. when binding to an ARIA attribute -->
+<button [attr.aria-label]="myActionLabel">…</button>
+or <!-- Static ARIA attributes require no extra syntax -->
+<button aria-label="Save document">…</button>
+
+*) The Angular Material library, which is maintained by the Angular team, is a suite of reusable UI components that aims to be fully accessible. 
+
+*) accesibility in routing - 
+     router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+  const mainHeader = document.querySelector('#main-content-header')
+  if (mainHeader) {
+    mainHeader.focus();
+  }
+});
+
+*) <a routerLink="home"
+      routerLinkActive="active-page"
+      ariaCurrentWhenActive="page">
+    Home
+  </a>

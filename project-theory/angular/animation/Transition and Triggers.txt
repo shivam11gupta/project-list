@@ -1,0 +1,20 @@
+*) for example please refer 
+
+*) Wildcard state - An asterisk * or wildcard matches any animation state. ex. - a transition of open => * applies when the element's state changes from open to anything else.
+   transition('* => closed', [animate('1s')]),
+   transition('* => open', [animate('0.5s')]),
+   or double arrow bi directional
+   transition('open <=> closed', [animate('0.5s')]),
+
+*) The * => * transition applies when any change between two states takes place.
+
+*) Use wildcards with styles - transition('* => open', [animate('1s', style({opacity: '*'}))]),
+
+*) A transition of * => void applies when the element leaves a view, regardless of what state it was in before it left
+A transition of void => * applies when the element enters a view, regardless of what state it assumes when entering
+The wildcard state * matches to any state, including void
+
+*) :enter and :leave are aliases for the void => * and * => void transitions.
+
+           after that content from angular remained only read when asked in interview or use in project
+    

@@ -1,0 +1,47 @@
+*) Backend API Setup
+Steps
+In the demos directory, install json-server
+
+cd demos //if you aren't there already
+npm install json-server
+
+Create directory api at the top level in your project
+
+Create the file api\db.json
+
+Copy the data from here into the file.
+
+Open package.json
+
+Add the following script:
+
+"scripts": {
+    "start": "serve -s",
++    "api": "json-server ./api/db.json"
+},
+
+Run the server
+
+npm run api
+
+You should see the following result:
+
+
+\{^_^}/ hi!
+
+Loading ./api/db.json
+Done
+
+Resources
+http://localhost:3000/posts
+http://localhost:3000/comments
+http://localhost:3000/albums
+http://localhost:3000/photos
+http://localhost:3000/users
+http://localhost:3000/todos
+
+Home
+http://localhost:3000
+
+
+*) 

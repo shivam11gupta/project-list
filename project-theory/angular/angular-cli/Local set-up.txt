@@ -1,0 +1,19 @@
+*) This guide explains how to set up your environment for Angular development using the Angular CLI. It includes information about installing the CLI, creating an initial workspace and starter app, and running that app locally to verify your setup.
+
+*) To install Angular CLI on your local system, you need to install Node.js. Angular CLI uses Node and its associated package manager, npm, to install and run JavaScript tools outside the browser.
+
+*) Install the Angular CLI - 
+   npm install -g @angular/cli
+
+*) sudo npm install -g @angular/cli - for unix permission
+
+*) ng serve --open   // for running application\
+
+*) The ng new command creates an Angular workspace folder and generates a new application inside it
+
+*) Test your new application with ng test.
+   Generate boilerplate like components, directives, and pipes with ng generate.
+   Deploy your new application and make it available to real users with ng deploy.
+   Set up and run end-to-end tests of your application with ng e2e.
+
+*) 

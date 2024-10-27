@@ -1,0 +1,35 @@
+*) refer for example user-list.component.html
+
+*) Built-in attribute directives -
+   ngClass -
+   <div [ngClass]="isSpecial ? 'special' : ''">This div is special</div>
+   <div [ngClass]="currentClasses">This div is initially saveable, unchanged, and special.</div>
+
+   ngStyle - 
+   [ngStyle]="currentStyles"
+
+   ngModel - 
+   <input [(ngModel)]="currentItem.name" id="example-ngModel">
+
+
+*) <p appHighlight>Highlight me!</p>
+   import {Directive, ElementRef, HostListener} from '@angular/core';
+import {Input} from '@angular/core';
+@Directive({
+  standalone: true,
+  selector: '[appHighlight]',
+})
+export class HighlightDirective {
+  constructor(private el: ElementRef) {}
+  @HostListener('mouseenter') onMouseEnter() {
+    this.highlight('yellow');
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.highlight('');
+  }
+  private highlight(color: string) {
+    this.el.nativeElement.style.backgroundColor = color;
+  }
+}
+
+

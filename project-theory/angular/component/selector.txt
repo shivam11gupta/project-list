@@ -1,0 +1,59 @@
+Selector can directly be used by typing element-name directly as a legacy selector:
+@Component({
+    selector: 'app-element',
+    template:  './element.component.html',
+    styleUrls: ['./element.component.css']
+})
+This type of selector can access directly by typing the selector name inside the <> brackets as:
+
+<app-element></app-element>
+2. The selector can be used as attribute selector by put the selector into square brackets:
+
+@Component({
+    selector: '[app-element]',
+    template:  './element.component.html',
+    styleUrls: ['./element.component.css']
+})
+In this, we have changed our selector to be an attribute. To access this type of attribute selector we have to put this as an attribute inside a div or any other element as:
+
+<div app-element></div>
+3. The selector can also be select by class just like in CSS by putting a dot in the beginning:
+
+@Component({
+    selector: '.app-element',
+    template:  './element.component.html',
+    styleUrls: ['./element.component.css']
+})
+In this, we can select by class as:
+
+<div class="app-element"></div>
+
+Combining selectors
+You can combine multiple selectors by concatenating them. For example, you can match <button> elements that specify type="reset":
+
+@Component({
+  selector: 'button[type="reset"]',
+  ...
+})
+export class ResetButton { }
+check
+You can also define multiple selectors with a comma-separated list:
+
+@Component({
+  selector: 'drop-zone, [dropzone]',
+  ...
+})
+export class DropZone { }
+
+When to use an attribute selector
+You should consider an attribute selector when you want to create a component on a standard native element. For example, if you want to create a custom button component, you can take advantage of the standard <button> element by using an attribute selector:
+
+@Component({
+  selector: 'button[yt-upload]',
+   ...
+})
+export class YouTubeUploadButton { }
+check
+This approach allows consumers of the component to directly use all the element's standard APIs without extra work. This is especially valuable for ARIA attributes such as aria-label.
+
+Note: Selecting by ID and by all pseudo selectors such as hover and so on won’t work as they are not supported by Angular.

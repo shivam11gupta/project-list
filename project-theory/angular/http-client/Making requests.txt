@@ -1,0 +1,85 @@
+*) HttpClient has methods corresponding to the different HTTP verbs used to make requests, both to load data and to apply mutations on the server. Each method returns an RxJS Observable which, when subscribed, sends the request and then emits the results when the server responds.
+
+*) Fetching JSON data - 
+    http.get<Config>('/api/config').subscribe(config => {
+  // process the configuration.
+});
+
+*) Fetching other types of data - 
+responseType value	Returned response type
+'json' (default)	JSON data of the given generic type
+'text'	string data
+'arraybuffer'	ArrayBuffer containing the raw response bytes
+'blob'	Blob instance
+
+http.get('/images/dog.jpg', {responseType: 'arraybuffer'}).subscribe(buffer => {
+  console.log('The image is ' + buffer.byteLength + ' bytes large');
+});
+
+*) Setting URL parameters - 
+   http.get('/api/config', {
+  params: {filter: 'all'},
+}).subscribe(config => {
+  // ...
+});
+
+*) Setting request headers - 
+   http.get('/api/config', {
+  headers: {
+    'X-Debug-Level': 'verbose',
+  }
+}).subscribe(config => {
+  // ...
+});
+
+*) Interacting with the server response events - 
+For convenience, HttpClient by default returns an Observable of the data returned by the server (the response body). Occasionally it's desirable to examine the actual response, for example to retrieve specific response headers.
+   http.get<Config>('/api/config', {observe: 'response'}).subscribe(res => {
+  console.log('Response status:', res.status);
+  console.log('Body:', res.body);
+});
+
+*) Receiving raw progress events - 
+   In addition to the response body or response object, HttpClient can also return a stream of raw events corresponding to specific moments in the request lifecycle. These events include when the request is sent, when the response header is returned, and when the body is complete. These events can also include progress events which report upload and download status for large request or response bodies.
+   http.post('/api/upload', myData, {
+  reportProgress: true,
+  observe: 'events',
+}).subscribe(event => {
+  switch (event.type) {
+    case HttpEventType.UploadProgress:
+      console.log('Uploaded ' + event.loaded + ' out of ' + event.total + ' bytes');
+      break;
+    case HttpEventType.Response:
+      console.log('Finished uploading!');
+      break;
+  }
+});
+
+*) Handling request failure
+There are two ways an HTTP request can fail:
+A network or connection error can prevent the request from reaching the backend server.
+The backend can receive the request but fail to process it, and return an error response.
+HttpClient captures both kinds of errors in an HttpErrorResponse which it returns through the Observable's error channel. Network errors have a status code of 0 and an error which is an instance of ProgressEvent. Backend errors have the failing status code returned by the backend, and the error response as the error. Inspect the response to identify the error's cause and the appropriate action to handle the error.
+
+*) Within a component, you can combine @if with the async pipe to render the UI for the data only after it's finished loading:
+   import { AsyncPipe } from '@angular/common';
+@Component({
+  standalone: true,
+  imports: [AsyncPipe],
+  template: `
+    @if (user$ | async; as user) {
+      <p>Name: {{ user.name }}</p>
+      <p>Biography: {{ user.biography }}</p>
+    }
+  `,
+})
+export class UserProfileComponent {
+  @Input() userId!: string;
+  user$!: Observable<User>;
+  constructor(private userService: UserService) {}
+  ngOnInit(): void {
+    this.user$ = this.userService.getUser(this.userId);
+  }
+}
+
+*) 

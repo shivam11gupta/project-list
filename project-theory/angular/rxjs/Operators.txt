@@ -1,0 +1,445 @@
+*) practice after project assignment
+
+*) Operators are functions. There are two kinds of operators:
+   A Pipeable Operator is a function that takes an Observable as its input and returns another Observable. It is a pure operation: the previous Observable stays unmodified.
+   Creation Operators are the other kind of operator, which can be called as standalone functions to create a new Observable. For example: of(1, 2, 3) creates an observable that will emit 1, 2, and 3, one right after another. Creation operators will be discussed in more detail in a later section.
+
+*) Categories of operators - 
+   1) creation operator - 
+      a) from - import { from } from 'rxjs';
+
+const array = [10, 20, 30];
+const result = from(array);
+
+result.subscribe(x => console.log(x));
+
+// Logs:
+// 10
+// 20
+// 30
+   
+     b) fromEvent - Creates an Observable from DOM events, or Node.js EventEmitter events or others.
+    import { fromEvent } from 'rxjs';
+ 
+const div = document.createElement('div');
+div.style.cssText = 'width: 200px; height: 200px; background: #09c;';
+document.body.appendChild(div);
+ 
+// note optional configuration parameter which will be passed to addEventListener
+const clicksInDocument = fromEvent(document, 'click', { capture: true });
+const clicksInDiv = fromEvent(div, 'click');
+ 
+clicksInDocument.subscribe(() => console.log('document'));
+clicksInDiv.subscribe(() => console.log('div'));
+ 
+// By default events bubble UP in DOM tree, so normally
+// when we would click on div in document
+// "div" would be logged first and then "document".
+// Since we specified optional `capture` option, document
+// will catch event when it goes DOWN DOM tree, so console
+// will log "document" and then "div".
+
+       c) interval - Creates an Observable that emits sequential numbers every specified interval of time
+              import { interval, take } from 'rxjs';
+              const numbers = interval(1000);
+              const takeFourNumbers = numbers.pipe(take(4));
+              takeFourNumbers.subscribe(x => console.log('Next: ', x));
+               // Logs:
+               // Next: 0
+               // Next: 1
+               // Next: 2
+               // Next: 3
+
+        d) of - Converts the arguments to an observable sequence.
+               import { of } from 'rxjs';
+ 
+of(10, 20, 30)    // if of([10,20,30]) then output would be [10,20,30]
+  .subscribe({
+    next: value => console.log('next:', value),
+    error: err => console.log('error:', err),
+    complete: () => console.log('the end'),
+  });
+ 
+// Outputs
+// next: 10
+// next: 20
+// next: 30
+// the end
+
+        e) Creates an Observable that emits a sequence of numbers within a specified range.
+            import { range } from 'rxjs';
+ 
+const numbers = range(1, 3);
+ 
+numbers.subscribe({
+  next: value => console.log(value),
+  complete: () => console.log('Complete!')
+});
+ 
+// Logs:
+// 1
+// 2
+// 3
+// 'Complete!'
+
+         f) throwError - Creates an observable that will create an error instance and push it to the consumer as an error immediately upon subscription.
+                  import { throwError } from 'rxjs';
+
+                     let errorCount = 0;
+
+                     const errorWithTimestamp$ = throwError(() => {
+                     const error: any = new Error(`This is error number ${ ++errorCount }`);
+                     error.timestamp = Date.now();
+                     return error;
+                     });
+
+                     errorWithTimestamp$.subscribe({
+                     error: err => console.log(err.timestamp, err.message)
+                     });
+
+                     errorWithTimestamp$.subscribe({
+                     error: err => console.log(err.timestamp, err.message)
+                     });
+
+                     // Logs the timestamp and a new error message for each subscription
+
+          g) timer - Used to emit a notification after a delay.
+                    
+               import { of, timer, concatMap } from 'rxjs';
+
+               // This could be any observable
+               const source = of(1, 2, 3);
+
+               timer(3000)
+               .pipe(concatMap(() => source))
+               .subscribe(console.log);
+
+   2) Join Creation Operators - 
+           a) concat - Concatenates multiple Observables together by sequentially emitting their values, one Observable after the other.
+                   import { interval, take, range, concat } from 'rxjs';
+
+                     const timer = interval(1000).pipe(take(4));
+                     const sequence = range(1, 10);
+                     const result = concat(timer, sequence);
+                     result.subscribe(x => console.log(x));
+
+                     // results in:
+                     // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
+
+          b) forkJoin - Wait for Observables to complete and then combine last values they emitted; complete immediately if an empty array is passed.
+                     import { forkJoin, of, timer } from 'rxjs';
+
+                  const observable = forkJoin({
+                  foo: of(1, 2, 3, 4),
+                  bar: Promise.resolve(8),
+                  baz: timer(4000)
+                  });
+                  observable.subscribe({
+                  next: value => console.log(value),
+                  complete: () => console.log('This is how it ends!'),
+                  });
+
+                  // Logs:
+                  // { foo: 4, bar: 8, baz: 0 } after 4 seconds
+                  // 'This is how it ends!' immediately after
+            
+           c) import { forkJoin, of, timer } from 'rxjs';
+
+               const observable = forkJoin([
+               of(1, 2, 3, 4),
+               Promise.resolve(8),
+               timer(4000)
+               ]);
+               observable.subscribe({
+               next: value => console.log(value),
+               complete: () => console.log('This is how it ends!'),
+               });
+
+               // Logs:
+               // [4, 8, 0] after 4 seconds
+               // 'This is how it ends!' immediately after
+
+             d) merge -  Flattens multiple Observables together by blending their values into one Observable. - 
+                import { merge, fromEvent, interval } from 'rxjs';
+
+                  const clicks = fromEvent(document, 'click');
+                  const timer = interval(1000);
+                  const clicksOrTimer = merge(clicks, timer);
+                  clicksOrTimer.subscribe(x => console.log(x));
+
+                  // Results in the following:
+                  // timer will emit ascending values, one every second(1000ms) to console
+                  // clicks logs MouseEvents to console every time the "document" is clicked
+                  // Since the two streams are merged you see these happening
+                  // as they occur.
+
+    3) Transformation Operators - 
+               a) Collects values from the past as an array, and emits that array only when another Observable emits.
+                   import { fromEvent, interval, buffer } from 'rxjs';
+
+                  const clicks = fromEvent(document, 'click');
+                  const intervalEvents = interval(1000);
+                  const buffered = intervalEvents.pipe(buffer(clicks));
+                  buffered.subscribe(x => console.log(x));
+
+
+                           next after project assignment till then description learn
+
+         Creation Operators
+Following is the list of operators that can be used as creation operators:
+
+Index
+Operators
+Description
+1.
+ajax
+The ajax operator is used to make an ajax request for the given URL.
+2.
+from
+The from operator is used to create an observable from an array, an array-like object, a promise, an iterable object, or an observable-like object.
+3.
+fromEvent
+The fromEvent operator is used to give output as an observable that is to be used on elements that emit an event for example buttons, clicks, etc.
+4.
+fromEventPattern
+The fromEventPattern operator is used to create an observable from the input function that is used to register event handlers.
+5.
+interval
+The interval operator is used to create an Observable for every time for the given time interval.
+6.
+of
+The of operator is used to take in the arguments passed and convert them to observable.
+7.
+range
+The range operator is used to create an Observable that gives you a sequence of numbers based on the range provided.
+8.
+throwError
+The throwError operator is used to create an observable that notifies an error.
+9.
+timer
+The timer operator is used to create an observable that emits the value after the timeout and the value will keep increasing after each call.
+10.
+iif
+The iif operator is used to decide which Observable will be subscribed.
+Mathematical Operators
+Following is the list of operators that can be used as mathematical operators:
+
+Index
+Operators
+Description
+1.
+count
+The count operator is used to take an observable with values and convert it into an observable that gives a single value.
+2.
+max
+The max method is used to take an observable with all values and return an observable with the maximum value from the list.
+3.
+min
+The min method is used to take an observable with all values and return an observable with the minimum value from the list.
+4.
+reduce
+In reduce operator, an accumulator function is used on the input observable. It returns the accumulated value in an observable form, with an optional seed value passed to the accumulator function.
+So, the reduce function takes two arguments, one accumulator function, and second the seed value.
+Join Operators
+Following is the list of operators that can be used as join operators:
+Advertisement
+
+
+Index
+Operators
+Description
+1.
+concat
+The concat operator is used to sequentially emit the Observable given as input and proceed to the next one.
+2.
+forkJoin
+The forkJoin operator is used to take in an array or dict object as an input and wait for the observable to complete and return the last values emitted from the given observable.
+3.
+merge
+The merge operator is used to take in the input observable and emit all the values from the observable and emit one single output observable.
+4.
+race
+The race operator is used to return an observable that will be a mirror copy of the first source observable.
+Transformation Operators
+Following is the list of operators that can be used as transformation operators:
+
+Index
+Operators
+Description
+1.
+buffer
+The buffer operator is used to be operated on an observable and take in argument as an observable. It starts buffering the values emitted on its original observable array and emits when the observable taken as an argument, emits. Once the observable taken as arguments emits, the buffer is reset and starts buffering again on original till the input observable emits, and the same process repeats itself.
+2.
+bufferCount
+The buffercount operator is used to collect the values from the observable on which it is called and emit the same when the buffer size is given to buffercount matches.
+3.
+bufferTime
+The bufferTime operator is similar to bufferCount. It is used to collect the values from the observable on which it is called and emit the bufferTimeSpan. It takes in 1 argument, i.e., bufferTimeSpan.
+4.
+bufferToggle
+The bufferToggle operator is used to take two arguments, openings and closingSelector. The opening arguments are subscribable or a promise to start the buffer. The second argument closingSelector is again subscribable or promises an indicator to close the buffer and emit the values collected.
+5.
+bufferWhen
+The bufferWhen operator is used to give the values in the array form, it takes in one argument as a function that will decide when to close, emit and reset the buffer.
+6.
+expand
+The expand operator is used to take in a function as an argument applied on the source observable recursively and on the output observable. The final value is observable.
+7.
+groupBy
+Te groupBy operator is used to group the output according to specific conditions, and these group items are emitted as GroupedObservable.
+8.
+map
+In the map operator's case, a project function is applied on each value on the source Observable, and the same output is emitted as an Observable.
+9.
+mapTo
+In the mapTo operator, a constant value is given as output along with the Observable every time the source Observable emits a value.
+10.
+mergeMap
+In the mergeMap operator, a project function is applied on each source value, and the output of it is merged with the output Observable.
+11.
+switchMap
+The switchMap operator is used to apply a project function on each source value. The output of it is merged with the output Observable, and the value given is the most recent projected Observable.
+12.
+window
+The window operator is used to take an argument windowboundaries which is an observable and give back a nested observable whenever the given windowboundaries emits.
+Filtering Operators
+Following is the list of operators that can be used as filtering operators:
+
+Index
+Operators
+Description
+1.
+debounce
+In the debounce operator, a value is emitted from the source Observable after a while, and the emission is determined by another input given as Observable or promise.
+2.
+debounceTime
+The debounceTime operator is used to emit value from the source observable only after the time is complete.
+3.
+distinct
+This operator is used to give all the values from the source observable that are distinct compared with the previous values.
+4.
+elementAt
+This operator is used to give a single value from the source observable based upon the given index.
+5.
+filter
+This operator is used to filter the values from source Observable based on the predicate function given.
+6.
+first
+The first operator is used to give the first value emitted by the source Observable.
+7.
+last
+The last operator is used to give the last value emitted by the source Observable.
+8.
+ignoreElements
+The ignoreElements operator is used to ignore all the values from the source Observable and only execute calls to complete or error callback functions.
+9.
+sample
+The sample operator is used to give the most recent value from the source Observable, and the output will depend upon the argument passed to it emits.
+10.
+skip
+The skip operator is used to give back an observable that will skip the first occurrence of count items taken as input.
+11.
+throttle
+The throttle operator is used to give output and ignore values from the source observable for the time determined by the input function taken as an argument, and the same process will be repeated.
+Utility Operators
+Advertisement
+
+Following is the list of operators that can be used as utility operators:
+
+Index
+Operators
+Description
+1.
+tap
+The tap operator contains the output, same as the source observable, and it can be used to log the values to the user from the observable.
+2.
+delay
+The delay operator is used to delay the values emitted from the source observable based on the timeout given.
+3.
+delayWhen
+The delayWhen operator is used to delay the values emitted from the source observable based on the timeout from another observable taken as input.
+4.
+observeOn
+The observeOn operator is based on the input scheduler. It is used to reemit the notifications from the source observable.
+5.
+subscribeOn
+The subscribeOn operator helps to asynchronous subscribes to the source observable based on the scheduler taken as input.
+6.
+timeInterval
+The timeInterval operator is used to return an object containing current value, and the time elapsed between the current and previous value calculated using the scheduler input.
+7.
+timestamp
+The timestamp operator is used to return the timestamp along with the value emitted from the source observable. It tells about the time when the value was emitted.
+8.
+timeout
+The timeout operator is used to throw an error if the source observable does not emit a value after the given timeout.
+9.
+toArray
+The toArray operator is used to accumulate all the source values from the observable and provide their outputs as an array when the source completes.
+Conditional Operators
+Following is the list of operators that can be used as conditional operators:
+
+Index
+Operators
+Description
+1.
+defaultIfEmpty
+The defaultIfEmpty operator is used to return a default value if the source observable is empty.
+2.
+every
+The every operator is used to return an observable based on the input function, which satisfies the condition on each of the values on source observable.
+3.
+find
+The find operator is used to return the observable when the source observable's first value satisfies the condition for the predicate function taken as input.
+4.
+findIndex
+The findIndex operator is based on the input schedule. It is used to reemit the notifications from the source observable.
+5.
+isEmpty
+The isEmpty operator gives the output "True" if the input observable goes for complete callback without emitting any values and "False" if the input observable emits any values.
+Multicasting Operators
+Following is the list of operators that can be used as multicasting operators:
+
+Index
+Operators
+Description
+1.
+multicast
+A multicast operator shares the single subscription created with other subscribers. The params that multicast takes in is a subject or a factory method that returns a ConnectableObservable that has a connect method. The connect method is called to subscribe.
+2.
+publish
+The publish operator is used to give back ConnectableObservable and use connect method to subscribe to the observables.
+3.
+publishBehavior
+The publishBehaviour makes use of BehaviourSubject, and returns ConnectableObservable. The connect method is used to subscribe to the observable created.
+4.
+publishLast
+The publishBehaviour operator makes use of AsyncSubject, and returns ConnectableObservable. The connect method is used to subscribe to the observable created.
+5.
+publishReplay
+The publishReplay operator uses behavior subject where it can buffer the values, replay the same to the new subscribers, and return ConnectableObservable. The connect method is used to subscribe to the observable created.
+6.
+share
+The share operator is an alias for a multicast operator. The only difference is that you don't have to called the connect method manually to start the subscription.
+Error Handling Operators
+Following is the list of operators that can be used as error handling operators:
+
+Index
+Operators
+Description
+1.
+catchError
+The catchError operator is used to take care of catching errors on the source observable by returning a new observable or an error.
+2.
+retry
+The retry operator is used to take care of retrying back on the source observable if there is an error. The retry is done according to the given input count.
+3.
+retryWhen
+-
+
+
+   
+
+
+
+ 

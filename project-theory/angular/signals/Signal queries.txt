@@ -1,0 +1,43 @@
+*) A component or directive can define queries that find child elements and read values from their injectors.
+
+*) There are two categories of query: view queries and content queries.
+    Signal queries supply query results as a reactive signal primitive. You can use query results in computed and effect, composing these results with other signals.
+
+*) viewChild - @Component({
+  template: `
+    <div #el></div>
+    <my-component />
+  `
+})
+export class TestComponent {
+  // query for a single result by a string predicate  
+  divEl = viewChild<ElementRef>('el')  // Signal<ElementRef|undefined>
+  // query for a single result by a type predicate
+  cmp = viewChild(MyComponent);        // Signal<MyComponent|undefined>
+}
+
+*) viewChildren - You can also query for multiple results with the viewChildren function.
+                  @Component({
+  template: `
+    <div #el></div>
+    @if (show) {
+      <div #el></div>
+    }
+  `
+})
+export class TestComponent {
+  show = true;
+  // query for multiple results
+  divEls = viewChildren<ElementRef>('el');    // Signal<ReadonlyArray<ElementRef>>
+}
+
+*) contentChild - @Component({...})
+  export class TestComponent {
+  // query by a string predicate  
+  headerEl = contentChild<ElementRef>('h');   // Signal<ElementRef|undefined>
+  // query by a type predicate
+  header = contentChild(MyHeader);            // Signal<MyHeader|undefined>
+}
+
+*) contentChildren - 
+     

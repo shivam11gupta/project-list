@@ -1,0 +1,22 @@
+*) Your components will often need to display different things depending on different conditions. In React, you can conditionally render JSX using JavaScript syntax like if statements, &&, and ? : operators.
+   function Item({ name, isPacked }) {
+  if (isPacked) {
+    return <li className="item">{name} ✅</li>;
+  }
+  return <li className="item">{name}</li>;
+}
+
+*) In some situations, you won’t want to render anything at all. For example, say you don’t want to show packed items at all. A component must return something. In this case, you can return null:
+
+if (isPacked) {
+  return null;
+}
+return <li className="item">{name}</li>;
+If isPacked is true, the component will return nothing, null. Otherwise, it will return JSX to render.
+
+*) Conditionally including JSX - in abve example jsx is repetitive for avoiding -
+   return (
+  <li className="item">
+    {isPacked ? name + ' ✅' : name}
+  </li>
+);
